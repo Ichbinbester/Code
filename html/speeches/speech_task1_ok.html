@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aufgabe 1</title>
+  <link rel="stylesheet" href="../../style/speech.css">
+</head>
+<body>
+
+  <img id="character" src="../../images/character2.png" alt="Charakter">
+
+  <div id="speech">Diese Zeilen stammen vom Generalmajor höchstpersönlich. Er traut niemandem und befahl, alle seine Befehle stets um drei Buchstaben zurückzusetzen, damit sie nicht in Feindeshand lesbar seien.</div>
+
+  <button class="button bottom-left" onclick="previous()" id="backBtn" style="display: none;">Zurück</button>
+  <button class="button bottom-right" onclick="next()" id="nextBtn">Weiter</button>
+
+  <script>
+    const lines = [
+      "Diese Zeilen stammen vom Generalmajor höchstpersönlich. Er traut niemandem und befahl, alle seine Befehle stets um drei Buchstaben zurückzusetzen, damit sie nicht in Feindeshand lesbar seien. ",
+      "Nur ein Feldmarschall und seine engsten Verbündeten wissen das... ", 
+      "Begebt Euch sogleich zum eisernen Denkmal im Park. <br>Dort erwartet Euch die nächste Entscheidung, und mit ihr vielleicht das Schicksal der ganzen Garnison. ",
+    ];
+
+    let index = 0;
+
+    function updateSpeech() {
+      const speechElement = document.getElementById("speech");
+      const backBtn = document.getElementById("backBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      
+      // Fade-Effekt
+      speechElement.style.opacity = '0';
+      
+      setTimeout(() => {
+        speechElement.innerHTML = lines[index];
+        speechElement.style.opacity = '1';
+      }, 200);
+      
+      backBtn.style.display = index > 0 ? "block" : "none";
+      nextBtn.innerHTML = "Weiter";
+    }
+
+    function next() {
+      if (index < lines.length - 1) {
+        index++;
+        updateSpeech();
+      } else {
+        // Fade-out-Effekt vor dem Seitenwechsel
+        document.body.classList.add('fade-out');
+        requestAnimationFrame(() => {
+        setTimeout(() => {
+          window.location.href = "../map/map1.html";
+        }, 500);
+        });
+      }
+    }
+
+    function previous() {
+      if (index > 0) {
+        index--;
+        updateSpeech();
+      }
+    }
+  </script>
+</body>
+</html>

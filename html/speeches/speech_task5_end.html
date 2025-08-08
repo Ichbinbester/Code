@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aufgabe 1</title>
+  <link rel="stylesheet" href="../../style/speech.css">
+</head>
+<body>
+  <video id="smoke" autoplay muted loop playsinline>
+    <source src="../../videos/smoke.webm" type="video/webm">
+    <source src="../../videos/smoke.mp4" type="video/mp4">
+  </video>
+  <div id="alarmFlash" style="display: none;"></div>
+  <img id="character" src="../../images/character1.png" alt="Charakter">
+
+  <div id="speech">Feldmarschall – Alarm! Späher berichten, dass sich französische Truppen überraschend nähern. Ein Angriff war zu diesem Zeitpunkt nicht zu erwarten – wir sind nicht vorbereitet!</div>
+
+  <button class="button bottom-left" onclick="previous()" id="backBtn" style="display: none;">Zurück</button>
+  <button class="button bottom-right" onclick="next()" id="nextBtn">Weiter</button>
+
+  <script>
+    const lines = [
+      "Feldmarschall – Alarm! Späher berichten, dass sich französische Truppen überraschend nähern. Ein Angriff war zu diesem Zeitpunkt nicht zu erwarten – wir sind nicht vorbereitet! ",
+      "Begebt euch augenblicklich zur Brücke. Jeder Atemzug zählt. Die Entscheidung fällt jetzt. "
+    ];
+
+    let index = 0;
+
+    function updateSpeech() {
+      const speechElement = document.getElementById("speech");
+      const backBtn = document.getElementById("backBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      
+      // Fade-Effekt
+      speechElement.style.opacity = '0';
+      
+      setTimeout(() => {
+        speechElement.innerHTML = lines[index];
+        speechElement.style.opacity = '1';
+      }, 200);
+      
+      backBtn.style.display = index > 0 ? "block" : "none";
+      nextBtn.innerHTML = "Weiter";
+    }
+
+    function next() {
+      if (index < lines.length - 1) {
+        index++;
+        updateSpeech();
+      } else {
+        // Fade-out-Effekt vor dem Seitenwechsel
+        document.body.classList.add('fade-out');
+        requestAnimationFrame(() => {
+        setTimeout(() => {
+          window.location.href = "../map/map5.html";
+        }, 500);
+        });
+      }
+    }
+
+    function previous() {
+      if (index > 0) {
+        index--;
+        updateSpeech();
+      }
+    }
+
+    window.addEventListener('load', () => {
+      document.getElementById("alarmFlash").style.display = "block";
+
+      // Nach 3 Sekunden Alarm beenden
+      setTimeout(() => {
+        document.getElementById("alarmFlash").style.display = "none";
+      }, 3000);
+
+      // Vibration
+      if (navigator.vibrate) {
+        navigator.vibrate([200, 100]);
+      }
+    });
+  </script>
+</body>
+</html>

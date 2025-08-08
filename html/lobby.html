@@ -1,0 +1,84 @@
+<!-- LOBBY -->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lobby</title>
+  <link rel="stylesheet" href="../style/lobby.css" />
+</head>
+<body>
+  <div class="lobby-container">
+    <h1>Warte auf Spielstart ...</h1>
+    <p class="code-info">Buchungscode: <strong id="codeDisplay"></strong></p>
+
+    <div id="playersList" class="lobby-list">
+      <!-- Spieler und Gruppen werden hier dynamisch eingefügt -->
+    </div>
+
+    <div style="text-align:center; margin-top: 2rem;">
+      <button id="startGameBtn" class="btn primary">Spiel starten</button>
+    </div>
+  </div>
+
+  <script>
+    // Aus URL oder localStorage holen
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code') || localStorage.getItem('code');
+    const name = localStorage.getItem('name');
+    const playercode = localStorage.getItem('playercode');
+
+    // In UI anzeigen
+    document.getElementById("codeDisplay").textContent = code ?? 'Unbekannt';
+
+    // Spieler in Lobby anzeigen
+    async function refreshLobby() {
+      try {
+        const res = await fetch(`../scripts/lobby.php?code=${encodeURIComponent(code)}`);
+        const data = await res.json();
+        const container = document.getElementById("playersList");
+        container.innerHTML = "";
+
+        const solo = data.solo ?? [];
+        const groups = data.groups ?? [];
+
+        if (groups.length > 0) {
+          const groupBlock = document.createElement("div");
+          groupBlock.innerHTML = "<h2>Gruppen</h2><ul>" +
+            groups.map(g => `<li>${g.name} <span class="badge">Gruppe</span></li>`).join('') +
+            "</ul>";
+          container.appendChild(groupBlock);
+        }
+
+        if (solo.length > 0) {
+          const soloBlock = document.createElement("div");
+          soloBlock.innerHTML = "<h2>Einzelspieler</h2><ul>" +
+            solo.map(p => `<li>${p.name}</li>`).join('') +
+            "</ul>";
+          container.appendChild(soloBlock);
+        }
+
+        if (solo.length === 0 && groups.length === 0) {
+          container.innerHTML = "<p>Noch keine Teilnehmer in der Lobby.</p>";
+        }
+      } catch (err) {
+        console.error("Fehler beim Laden der Lobby:", err);
+      }
+    }
+
+    refreshLobby();
+    setInterval(refreshLobby, 10000); // alle 10 Sekunden aktualisieren
+
+    // Spielstart
+    document.getElementById("startGameBtn").addEventListener("click", () => {
+      if (!code || !name || !playercode) {
+        alert("Fehlende Daten. Bitte Lobby neu betreten.");
+        return;
+      }
+
+      const url = `../html/schnitzeljagd_aufgaben/task1/task1.html?i=1&code=${encodeURIComponent(code)}&player=${encodeURIComponent(name)}&playercode=${encodeURIComponent(playercode)}`;
+      window.location.href = url;
+    });
+  </script>
+</body>
+</html>

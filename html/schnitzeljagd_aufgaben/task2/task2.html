@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aufgabe 2 – Gewichtsrätsel</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Button für Tipps oben links -->
+<button class="tip-button" onclick="showTip()">
+  <svg class="lightbulb" viewBox="0 0 24 24">
+    <path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.87-3.13-7-7-7zM9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1z"/>
+  </svg>
+</button>
+
+<!-- Halbtransparenter Hintergrund beim Tipp-Popup -->
+<div class="popup-overlay" id="popupOverlay" onclick="hideTip()"></div>
+
+<!-- Tipp-Fenster -->
+<div class="tip-popup" id="tipPopup">
+  <button class="close-btn" onclick="hideTip()">&times;</button>
+  <div class="popup-header">
+    <svg class="popup-icon" viewBox="0 0 24 24">
+      <path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.87-3.13-7-7-7zM9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1z"/>
+    </svg>
+    <h2 class="popup-title">Hilfreiche Tipps</h2>
+  </div>
+  <div class="popup-content">
+    <p>Denkt an das Wohl der Truppe – ohne Nahrung, Waffen und Verbandszeug ist jede Schlacht verloren.</p>
+  </div>
+</div>
+
+<!-- Rätselcontainer -->
+<div class="container">
+  <h1>Gewichtsrätsel</h1>
+  <p>Maximale Traglast: <strong>100 kg</strong><br>Wähle die richtigen Objekte aus...</p>
+
+  <!-- Auswahlmöglichkeiten mit Checkboxen -->
+  <label class="checkbox-item"><input type="checkbox" name="item" value="Pulverfass"> Pulverfass (40 kg)</label>
+  <label class="checkbox-item"><input type="checkbox" name="item" value="Brot"> Brot für 3 Tage (30 kg)</label>
+  <label class="checkbox-item"><input type="checkbox" name="item" value="Munition"> Silberbesteck (10 kg)</label>
+  <label class="checkbox-item"><input type="checkbox" name="item" value="Bandagen"> Bandagen (20 kg)</label>
+  <label class="checkbox-item"><input type="checkbox" name="item" value="Gewehre"> Gewehrkiste (50 kg)</label>
+  <label class="checkbox-item"><input type="checkbox" name="item" value="KanonKugel"> Kanon Kugel (30 kg)</label>
+  <label class="checkbox-item"><input type="checkbox" name="item" value="Uniformen"> Frische Uniformen (25 kg)</label>
+  <p id="warningMessage" style="color: red; text-align: center; margin-top: 1em; display: none;">Bitte wähle mindestens 3 Objekte aus!</p>
+</div>
+
+<!-- Button zum Überprüfen der Antwort -->
+<button class="button bottom-right" onclick="checkAnswer()">Weiter</button>
+<script src="task2.js"></script>
+</body>
+</html>

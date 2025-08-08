@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AR Escape Game - Level Auswahl</title>
+  <link rel="stylesheet" href="../style/style.css" />
+  <link rel="stylesheet" href="../style/raetselraum.css" />
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <button class="back-btn" onclick="window.history.back()">
+        <span class="back-arrow">←</span>
+      </button>
+      <h1 class="game-title">Level Auswahl</h1>
+      <div class="progress-info">
+        <span class="completed-levels">1</span>/<span class="total-levels">4</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Level Grid -->
+    <div class="level-grid">
+      
+      <!-- Level 1 - Completed -->
+      <div class="level-card completed" data-level="1">
+        <div class="level-number">1</div>
+        <div class="level-info">
+          <h3 class="level-title">Das Rätselhafte Gedicht</h3>
+          <p class="level-description">Entziffern sie das Gedicht</p>
+          <div class="level-stats">
+            <span class="completion-time">⏱️ 0:00</span>
+            <span class="difficulty">⭐⭐⭐</span>
+          </div>
+        </div>
+        <div class="level-status">
+          <span class="status-icon">✓</span>
+        </div>
+      </div>
+
+      <!-- Level 2 - Available -->
+      <div class="level-card available" data-level="2">
+        <div class="level-number">2</div>
+        <div class="level-info">
+          <h3 class="level-title">Die geheime Botschaft</h3>
+          <p class="level-description">Entschlüsseln sie die geheime Botschaft</p>
+          <div class="level-stats">
+            <span class="difficulty">⭐⭐⭐⭐</span>
+          </div>
+        </div>
+        <div class="level-status">
+          <span class="status-icon">▶</span>
+        </div>
+      </div>
+
+      <!-- Level 3 - Available -->
+      <div class="level-card available" data-level="3">
+        <div class="level-number">3</div>
+        <div class="level-info">
+          <h3 class="level-title">Das falsche Gemälde</h3>
+          <p class="level-description">Finden sie die Fehler</p>
+          <div class="level-stats">
+            <span class="difficulty">⭐⭐</span>
+          </div>
+        </div>
+        <div class="level-status">
+          <span class="status-icon">▶</span>
+        </div>
+      </div>
+
+      <!-- Level 4 - Available -->
+      <div class="level-card available" data-level="4">
+        <div class="level-number">4</div>
+        <div class="level-info">
+          <h3 class="level-title">Die verborgene Nachricht</h3>
+          <p class="level-description">Decken sie das Geheimnis auf</p>
+          <div class="level-stats">
+            <span class="difficulty">⭐</span>
+          </div>
+        </div>
+        <div class="level-status">
+          <span class="status-icon">▶</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal-overlay" id="confirmationModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="confirmationTitle">Level starten?</h2>
+        </div>
+        <div class="modal-body">
+          <div class="confirmation-content">
+            <p id="confirmationText">Möchten Sie dieses Level starten?</p>
+            <div class="level-info-preview" id="levelInfoPreview">
+              <!-- Level info will be inserted here -->
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn secondary" id="cancelConfirmBtn">Abbrechen</button>
+          <button class="btn primary" id="confirmStartBtn">Level starten</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="../scripts/raetselraum.js"></script>
+</body>
+</html>

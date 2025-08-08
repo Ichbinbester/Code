@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aufgabe 1</title>
+  <link rel="stylesheet" href="../../style/speech.css">
+</head>
+<body>
+
+  <img id="character" src="../../images/character1.png" alt="Charakter">
+
+  <div id="speech">Feldmarschall, wir haben ein ernstes Problem. Der Nachschubwagen ist blockiert – die Achse ist beschädigt, und das Maultier schafft kaum noch mehr als 100 Kilogramm.</div>
+
+  <button class="button bottom-left" onclick="previous()" id="backBtn" style="display: none;">Zurück</button>
+  <button class="button bottom-right" onclick="next()" id="nextBtn">Weiter</button>
+
+  <script>
+    const lines = [
+      "Feldmarschall, wir haben ein ernstes Problem. Der Nachschubwagen ist blockiert – die Achse ist beschädigt, und das Maultier schafft kaum noch mehr als 100 Kilogramm. ",
+      "Die Lage an der Front ist dramatisch. Seit Tagen fehlen die Vorräte und es mangelt an allem - außer Entschlossenheit. Ihr müsst nun entscheiden, was mitgenommen wird. ", 
+      "Was fehlt, kann töten. Was ihr mitnehmt, könnte Leben retten – oder verlieren. Denkt taktisch. Nicht alles, was schwer wiegt, ist auch von Gewicht. ",
+      "Zur Verfügung stehen: <ul><li>Pulverfass (40 kg)</li><li>Brot für 3 Tage (30 kg)</li><li>Silberbesteck (10 kg)</li><li>Bandagen (20 kg)</li><li>Gewehrkiste (50 kg)</li><li>Kanonenkugel (30 kg)</li><li>Frische Uniformen (25 kg)</li></ul> ",
+      "Die maximale Zuladung beträgt 100 kg. Trefft Eure Wahl und beeilt Euch. Die Schlacht wartet nicht. "
+    ];
+
+    let index = 0;
+
+    function updateSpeech() {
+      const speechElement = document.getElementById("speech");
+      const backBtn = document.getElementById("backBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      
+      // Fade-Effekt
+      speechElement.style.opacity = '0';
+      
+      setTimeout(() => {
+        speechElement.innerHTML = lines[index];
+        speechElement.style.opacity = '1';
+      }, 200);
+      
+      backBtn.style.display = index > 0 ? "block" : "none";
+      nextBtn.innerHTML = "Weiter";
+    }
+
+    function next() {
+      if (index < lines.length - 1) {
+        index++;
+        updateSpeech();
+      } else {
+        // Fade-out-Effekt vor dem Seitenwechsel
+        document.body.classList.add('fade-out');
+        requestAnimationFrame(() => {
+        setTimeout(() => {
+          window.location.href = "../schnitzeljagd_aufgaben/task2/task2.html";
+        }, 500);
+        });
+      }
+    }
+
+    function previous() {
+      if (index > 0) {
+        index--;
+        updateSpeech();
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+html {
+    background: linear-gradient(135deg, #2c1810, #6b4423);
+    height: 100%;
+}
+html, body {
+    overflow: hidden;
+    height: 100%;
+    margin: 0;
+    font-family: 'Crimson Text', serif;
+    position: relative;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Hintergrundmuster-Effekt */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image: radial-gradient(circle at 25% 25%, rgba(139, 69, 19, 0.1) 0%, transparent 25%),
+                      radial-gradient(circle at 75% 75%, rgba(160, 82, 45, 0.1) 0%, transparent 25%);
+    background-size: 200px 200px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Titel */
+h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #f4f1e8;
+}
+
+/* Hauptcontainer für Inhalte */
+.container {
+  text-align: center;
+  max-width: 100%;
+  background: linear-gradient(145deg, #2c1810, #4a3728);
+    padding: 1rem;
+    margin: 1rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4),
+                inset 0 2px 5px rgba(255, 255, 255, 0.1),
+                inset 0 -2px 5px rgba(139, 69, 19, 0.2);
+    border: 2px solid #8b4513;
+    font-size: 1rem;
+    color: #f4f1e8;
+    position: relative;
+    z-index: 1;
+}
+
+/* Checkbox-Stil */
+.radio-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75em;
+  border-bottom: 1px solid #ddd;
+  font-size: 1.2em;
+}
+.radio-item:last-child {
+  border-bottom: none;
+}
+input[type="radio"] {
+  transform: scale(1.5);
+  margin-right: 1em;
+}
+
+/* Buttons */
+.button {
+    position: fixed;
+    padding: 1rem 1rem;
+    letter-spacing: 1px;
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    border: 3px solid #8b4513;
+    border-radius: 15px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    color: #f4f1e8;
+    z-index: 10;
+    transition: background 0.3s ease;
+}
+
+/* Rechte untere Ecke */
+.bottom-right {
+    bottom: 20px;
+    right: 20px;
+    background: linear-gradient(145deg, #b8860b, #daa520);
+}
+.bottom-right:hover {
+    background: linear-gradient(145deg, #daa520, #b8860b);
+}

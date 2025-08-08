@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aufgabe 4 – Die Pulverkammer sichern</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Button für Tipps oben links -->
+<button class="tip-button" onclick="showTip()">
+  <svg class="lightbulb" viewBox="0 0 24 24">
+    <path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.87-3.13-7-7-7zM9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1z"/>
+  </svg>
+</button>
+
+<!-- Halbtransparenter Hintergrund beim Tipp-Popup -->
+<div class="popup-overlay" id="popupOverlay" onclick="hideTip()"></div>
+
+<!-- Tipp-Fenster -->
+<div class="tip-popup" id="tipPopup">
+  <button class="close-btn" onclick="hideTip()">&times;</button>
+  <div class="popup-header">
+    <svg class="popup-icon" viewBox="0 0 24 24">
+      <path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.87-3.13-7-7-7zM9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1z"/>
+    </svg>
+    <h2 class="popup-title">Hilfreiche Tipps</h2>
+  </div>
+  <div class="popup-content">
+    <p>Denkt taktisch – was, wenn die Franzosen uns überrumpeln?</p>
+  </div>
+</div>
+
+<!-- Rätselcontainer -->
+<div class="container">
+  <h1>Die Pulverkammer sichern</h1>
+  <p>Wähle eine der folgenden Optionen aus...</p>
+
+  <!-- Auswahlmöglichkeiten -->
+  <label class="radio-item"><input type="radio" name="option" value="sichern"> Schwarzpulver für eigene Truppen sichern</label>
+  <label class="radio-item"><input type="radio" name="option" value="unbrauchbar"> Schwarzpulver unbrauchbar machen</label>
+</div>
+
+<!-- Button zum Überprüfen der Antwort -->
+<button class="button bottom-right" onclick="checkAnswer()">Weiter</button>
+
+<script src="task4.js"></script>
+</body>
+</html>

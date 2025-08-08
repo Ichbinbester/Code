@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title data-i18n="title">Anfahrt – Schloss Ebelsberg AR Experience</title>
+  <link rel="stylesheet" href="../style/style.css" />
+  <link rel="stylesheet" href="../style/anfahrt.css" />
+</head>
+<body>
+
+  <!-- Hauptnavigation mit integrierten Logos -->
+  <nav class="main-nav">
+    <div class="nav-container">
+      <!-- Logo-Bereich links -->
+      <div class="nav-logos">
+        <img src="../images/logo_raetselraum.png" alt="Logo AR Rätselraum" />
+        <a href="https://www.htltraun.at/hp/public/" target="_blank" rel="noopener noreferrer">
+          <img src="../images/logo_htltraun.png" alt="HTL Traun Logo" />
+        </a>
+        <img src="../images/logo_schnitzel.png" alt="Logo Schnitzeljagd" />
+        <a href="https://www.realsim.info" target="_blank" rel="noopener noreferrer">
+          <img src="../images/logo_realsim.png" alt="Realsim Logo" />
+        </a>
+      </div>
+
+      <!-- Hauptmenü mittig -->
+      <button class="nav-toggle" aria-label="Navigation öffnen/schließen">☰</button>
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="../index.html" class="nav-link" data-i18n="nav.home">Startseite</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle">
+            <span data-i18n="nav.entertainment">Entertainmentangebote</span>
+            <span class="dropdown-arrow">▼</span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="schnitzeljagd.html" class="dropdown-link" data-i18n="nav.treasure_hunt">Schnitzeljagd</a></li>
+            <li><a href="raetselraum.html" class="dropdown-link" data-i18n="nav.puzzle_room">Rätselraum</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle">
+            <span data-i18n="nav.contact_directions">Kontakt & Anfahrt</span>
+            <span class="dropdown-arrow">▼</span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="kontakt.html" class="dropdown-link" data-i18n="nav.contact">Kontakt</a></li>
+            <li><a href="anfahrt.html" class="dropdown-link active" data-i18n="nav.directions">Anfahrt</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <!-- Sprachumschalter rechts -->
+      <div class="language-switcher">
+        <button class="lang-btn active" data-lang="de">DE</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero-Bereich -->
+  <header class="hero">
+    <div class="hero-content">
+      <h1 data-i18n="directions.title">Anfahrt zum Schloss Ebelsberg</h1>
+      <p data-i18n="directions.subtitle">Finden Sie den Weg zu unserem historischen AR-Erlebnis</p>
+    </div>
+  </header>
+
+  <!-- Hauptinhalt -->
+  <main class="main-content">
+    <div class="container">
+      
+      <!-- Adresse Section -->
+      <section class="address-section">
+        <h2 data-i18n="directions.address_title">Adresse</h2>
+        <div class="address-card">
+          <div class="address-info">
+            <h3 data-i18n="directions.castle_name">Schloss Ebelsberg</h3>
+            <p class="address-line" data-i18n="directions.street">Schlossgasse 1</p>
+            <p class="address-line" data-i18n="directions.city">4030 Linz, Österreich</p>
+          </div>
+          <div class="address-actions">
+            <a href="https://www.google.com/maps/place/Schloss+Ebelsberg/@48.2467819,14.3259007,742m/data=!3m2!1e3!4b1!4m6!3m5!1s0x4773bd84d9fb6879:0xf820aa8d8607da2f!8m2!3d48.2467819!4d14.3284756!16s%2Fg%2F11r7pkvqc?entry" target="_blank" rel="noopener noreferrer" class="btn primary">
+              <span data-i18n="directions.open_maps">🗺️ In Google Maps öffnen</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Anfahrt mit Auto -->
+      <section class="transport-section">
+        <h2 data-i18n="directions.by_car">Anfahrt mit dem Auto</h2>
+        <div class="transport-card">
+          <div class="transport-icon">🚗</div>
+          <div class="transport-info">
+            <h3 data-i18n="directions.from_vienna">Anfahrt auf der A1 aus Fahrtrichtung Wien:</h3>
+            <ul class="route-steps">
+              <li data-i18n="directions.step1">A1 Ausfahrt 160-Asten-St.Florian nehmen.</li>
+              <li data-i18n="directions.step2">Im Kreisverkehr dritte Ausfahrt (B1) nehmen.</li>
+              <li data-i18n="directions.step3">Nach ca. 7,8 km rechts abbiegen auf Wienerstraße (Einkaufszentrum HOFER) / Privatstraße (durchfahrt für Besucher Escape Room gestattet).</li>
+              <li data-i18n="directions.step4">Rechts abbiegen auf Ebelsberger Schloßberg.</li>
+              <li data-i18n="directions.step5">Links abbiegen in den Park. Vor dem Schranken stehen linkerhand Parkmöglichkeiten zur Verfügung. Die Zufahrt direkt bis zum Schlosstor ist nicht gestattet.</li>
+              <li data-i18n="directions.step6">Gehzeit ca. 4 Minuten durch die Parkanlage zum Haupttor.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="transport-card">
+          <div class="transport-icon">🚗</div>
+          <div class="transport-info">
+            <h3 data-i18n="directions.from_salzburg">Anfahrt auf der A1 aus Fahrtrichtung Salzburg:</h3>
+            <ul class="route-steps">
+              <li data-i18n="directions.step1">A1/E55 bis Ansfelden folgen, auf A1/E55 Ausfahrt 171-Ansfelden nehmen.</li>
+              <li data-i18n="directions.step2">Ca. 6,8 km auf Traunuferstraße (wird Kremsmünsterstraße) bis Ebelsberger Schloßberg in Linz nehmen (keine Zufahrt über das Ortszentrum Ebelsberg).</li>
+              <li data-i18n="directions.step3">Rechts abbiegen auf die (B1).</li>
+              <li data-i18n="directions.step4">Links abbiegen auf Wienerstraße (Einkaufszentrum HOFER) / Privatstraße (durchfahrt für Besucher Escape Room gestattet).</li>
+              <li data-i18n="directions.step5">Rechts abbiegen auf Ebelsberger Schloßberg.</li>
+              <li data-i18n="directions.step6">Links abbiegen in den Park. Vor dem Schranken stehen linkerhand Parkmöglichkeiten zur Verfügung. Die Zufahrt direkt bis zum Schlosstor ist nicht gestattet.</li>
+              <li data-i18n="directions.step7">Gehzeit ca. 4 Minuten durch die Parkanlage zum Haupttor.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Parken -->
+      <section class="parking-section">
+        <h2 data-i18n="directions.parking">Parkmöglichkeiten</h2>
+        <div class="parking-grid">
+          <div class="parking-card">
+            <div class="parking-icon">🅿️</div>
+            <h3 data-i18n="directions.castle_parking">Schlossparkplatz</h3>
+            <p data-i18n="directions.castle_parking_desc">Vor dem Schranken stehen linkerhand Parkmöglichkeiten zur Verfügung. Zufahrt direkt bis zum Schlosstor ist nicht gestattet.</p>
+            <div class="parking-info">
+              <span class="info-tag free" data-i18n="directions.free">Kostenlos</span>
+              <span class="info-tag" data-i18n="directions.spaces">20 Plätze</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Öffentliche Verkehrsmittel -->
+      <section class="transport-section">
+        <h2 data-i18n="directions.public_transport">Öffentliche Verkehrsmittel</h2>
+        <div class="transport-card">
+          <div class="transport-icon">🚋</div>
+          <div class="transport-info">
+            <h3 data-i18n="directions.bus_connection">Straßenbahn-Verbindung</h3>
+            <ul class="route-steps">
+              <li data-i18n="directions.bus_step1">Ab Linz/Donau Hauptplatz</li>
+              <li data-i18n="directions.bus_step2">Straßenbahn Linie 2 Richtung Linz/Donau solarCity (ca. 24 Minuten).</li>
+              <li data-i18n="directions.bus_step3">Haltestelle Hauderweg aussteigen.</li>
+              <li data-i18n="directions.bus_step4">Gehen Sie Richtung Ebelsberg  zurück und nach ca. 270 m biegen Sie nach links ab, um auf den</li>
+              <li data-i18n="directions.bus_step5">Ebelsberger Schloßweg zu gelangen..</li>
+              <li data-i18n="directions.bus_step6">Gegenüber der Reitanlage spazieren Sie in den Schlosspark und gehen Sie bis zum Haupttor.</li>
+            </ul>
+            <div class="transport-details">
+              <span class="detail-item">
+                <strong data-i18n="directions.frequency">Taktung:</strong> 
+                <span data-i18n="directions.frequency_time">alle 15 Minuten</span>
+              </span>
+              <span class="detail-item">
+                <strong data-i18n="directions.travel_time">Fahrzeit:</strong> 
+                <span data-i18n="directions.travel_time_duration">ca. 25 Minuten</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Zusätzliche Informationen -->
+      <section class="info-section">
+        <h2 data-i18n="directions.additional_info">Zusätzliche Informationen</h2>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-icon">♿</div>
+            <h3 data-i18n="directions.accessibility">Barrierefreiheit</h3>
+            <p data-i18n="directions.accessibility_desc">Das Schloss ist teilweise barrierefrei zugänglich</p>
+          </div>
+          <div class="info-card">
+            <div class="info-icon">🏛️</div>
+            <h3 data-i18n="directions.history">Historischer Ort</h3>
+            <p data-i18n="directions.history_desc">Erleben Sie Geschichte an einem authentischen Schauplatz</p>
+          </div>
+          <div class="info-card">
+            <div class="info-icon">📱</div>
+            <h3 data-i18n="directions.technology">AR-Technologie</h3>
+            <p data-i18n="directions.technology_desc">Moderne Technik trifft auf historische Atmosphäre</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p data-i18n="footer.copyright">&copy; 2025 Schloss Ebelsberg AR Experience. Alle Rechte vorbehalten.</p>
+  </footer>
+
+  <script src="../scripts/translation.js"></script>
+  <script src="../scripts/script.js"></script>
+
+</body>
+</html>

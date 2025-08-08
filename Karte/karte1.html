@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Karte 1 - Park</title>
+
+  <!-- Karte CSS -->
+  <link rel="stylesheet" href="karte.css" />
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+
+  <!-- Überschrift -->
+  <h1 id="map-title">Karte Ebelsberg 1809</h1>
+
+  <!-- Kartenbereich -->
+  <div id="map"></div>
+
+  <!-- Beschreibung (Speechbox) -->
+  <div id="speech">Der Wagen ist im Park</div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // Bereichsgrenzen festlegen (Zoom darf nicht hinausgehen)
+    const bounds = L.latLngBounds(
+      [48.24359755374813, 14.324905196694772], // Südwest
+      [48.24793531162874, 14.333512031428347]  // Nordost
+    );
+
+    // Karte erzeugen
+    const map = L.map('map', {
+      maxBounds: bounds,
+      maxBoundsViscosity: 1.0,
+      zoomControl: true
+    });
+
+    // Hintergrund: OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors',
+      minZoom: 16,
+      maxZoom: 19
+    }).addTo(map);
+
+    // Zoom auf definiertes Gebiet
+    map.fitBounds(bounds);
+
+    // ⛔ Beispiel-Overlay: (alte Karte als Overlay, muss noch vorbereitet werden)
+    // const imageUrl = 'pfad/zur/altenKarte1.png';
+    // const imageOverlay = L.imageOverlay(imageUrl, bounds).addTo(map);
+
+    // 📍 Medieval Icon Marker einfügen (z. B. Wagen)
+    const customIcon = L.icon({
+      iconUrl: 'icons/wagon.png',
+      iconSize: [40, 40],         // Icongröße (anpassen bei Bedarf)
+      iconAnchor: [20, 40],       // Punkt, der auf die Position zeigt
+      popupAnchor: [0, -40]       // Position des Popups relativ zum Icon
+    });
+
+    // Marker-Position (beispielhaft – genaue Koordinate setzen!)
+    const targetLatLng = [48.2459, 14.3292]; // 🗺 Beispielkoordinate für den Wagen
+
+    // Marker hinzufügen
+    L.marker(targetLatLng, { icon: customIcon })
+      .addTo(map)
+      .bindPopup('Gehe zum Wagen!');
+
+  </script>
+</body>
+</html>

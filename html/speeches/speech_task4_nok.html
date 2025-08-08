@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aufgabe 1</title>
+  <link rel="stylesheet" href="../../style/speech.css">
+</head>
+<body>
+
+  <img id="character" src="../../images/character1.png" alt="Charakter">
+
+  <div id="speech">Sehr wohl, Feldmarschall. Ihr habt entschieden, das Pulver im Lagerhaus zu belassen – in der Hoffnung, dass unsere Truppen es bergen werden. Ein kühner Entschluss… doch das Risiko bleibt.</div>
+
+  <button class="button bottom-left" onclick="previous()" id="backBtn" style="display: none;">Zurück</button>
+  <button class="button bottom-right" onclick="next()" id="nextBtn">Weiter</button>
+
+  <script>
+    const lines = [
+      "Sehr wohl, Feldmarschall. Ihr habt entschieden, das Pulver im Lagerhaus zu belassen – in der Hoffnung, dass unsere Truppen es bergen werden. Ein kühner Entschluss… doch das Risiko bleibt. ",
+      "Der Feind rückt schnell vor, und es bleibt ungewiss, wer die Stellung länger halten kann. Gott gebe, dass Euer Vertrauen gerechtfertigt ist. Möge das Pulver unseren Männern dienen – und nicht gegen sie verwendet werden. ",
+      "Begebt Euch nun zum Kirchenplatz, dort wartet bereits das nächste Problem... "
+    ];
+
+    let index = 0;
+
+    function updateSpeech() {
+      const speechElement = document.getElementById("speech");
+      const backBtn = document.getElementById("backBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      
+      // Fade-Effekt
+      speechElement.style.opacity = '0';
+      
+      setTimeout(() => {
+        speechElement.innerHTML = lines[index];
+        speechElement.style.opacity = '1';
+      }, 200);
+      
+      backBtn.style.display = index > 0 ? "block" : "none";
+      nextBtn.innerHTML = "Weiter";
+    }
+
+    function next() {
+      if (index < lines.length - 1) {
+        index++;
+        updateSpeech();
+      } else {
+        // Fade-out-Effekt vor dem Seitenwechsel
+        document.body.classList.add('fade-out');
+        requestAnimationFrame(() => {
+        setTimeout(() => {
+          window.location.href = "../map/map4.html";
+        }, 500);
+        });
+      }
+    }
+
+    function previous() {
+      if (index > 0) {
+        index--;
+        updateSpeech();
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Karte 1 - Park</title>
+  <!-- Karte CSS -->
+  <link rel="stylesheet" href="../style/map.css" />
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+
+  <!-- Überschrift -->
+  <h1 id="map-title">Karte Ebelsberg 1809</h1>
+
+  <!-- Karte -->
+  <div id="map"></div>
+
+  <!-- Textanzeige oben -->
+  <div id="speech">Finde den Wagen im Park!</div>
+
+  <!-- "Weiter"-Button, am Anfang unsichtbar -->
+  <button id="next-button" style="display: none;" onclick="goToNextScene()">Weiter</button>
+
+  <!-- Leaflet -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    //const bounds = L.latLngBounds(
+    //  [48.24359755374813, 14.324905196694772],
+    //  [48.24793531162874, 14.333512031428347]
+    //);
+
+    const bounds = L.latLngBounds(
+      [48.23291179119622, 14.26078869192242],
+      [48.23362715046137, 14.263541212910821]
+    );
+
+    //const zielKoordinate = L.latLng(48.24643135486091, 14.330302243615066); // Zielposition (Wagen)
+    const zielKoordinate = L.latLng(48.23334895089499, 14.262199782014923); // Zielposition (Wagen)
+
+
+
+    const map = L.map('map', {
+      maxBounds: bounds,
+     maxBoundsViscosity: 1.0,
+      zoomControl: true
+    });
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      minZoom: 16,
+      maxZoom: 19,
+    }).addTo(map);
+
+    map.fitBounds(bounds);
+
+    // Geofence-Logik
+    function checkPosition(position) {
+      const userLatLng = L.latLng(position.coords.latitude, position.coords.longitude);
+      const distance = userLatLng.distanceTo(zielKoordinate);
+
+      if (distance < 30) {  // innerhalb von 30m
+        document.getElementById('next-button').style.display = 'block';
+        document.getElementById('speech').innerText = "Sehr gut! Du hast den Ort erreicht!";
+      }
+    }
+
+    function errorPosition(err) {
+      console.warn(`ERROR(${err.code}): ${err.message}`);
+    }
+
+    if (navigator.geolocation) {
+      navigator.geolocation.watchPosition(checkPosition, errorPosition, {
+        enableHighAccuracy: true,
+        maximumAge: 0,
+        timeout: 5000
+      });
+    } else {
+      alert("GPS wird nicht unterstützt.");
+    }
+
+    function goToNextScene() {
+      window.location.href = "szene2_raetsel.html";
+    }
+  </script>
+</body>
+
+
+</html>

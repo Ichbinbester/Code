@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Schnitzeljagd – AR Escape Erlebnis Schloss Ebelsberg</title>
+  <link rel="stylesheet" href="../style/schnitzeljagd.css" />
+</head>
+<body>
+
+  <!-- Logo-Leiste -->
+  <div class="logo-bar">
+    <img src="../images/logo_raetselraum.png" alt="Logo AR Rätselraum" />
+    <a href="https://www.htltraun.at/hp/public/" target="_blank" rel="noopener noreferrer">
+      <img src="../images/logo_htltraun.png" alt="HTL Traun Logo" />
+    </a>
+    <img src="../images/logo_schnitzel.png" alt="Logo Schnitzeljagd" />
+    <a href="https://www.realsim.info" target="_blank" rel="noopener noreferrer">
+      <img src="../images/logo_realsim.png" alt="Realsim Logo" />
+    </a>
+  </div>
+
+  <!-- Hauptnavigation -->
+  <nav class="main-nav">
+    <div class="nav-container">
+      <button class="nav-toggle" aria-label="Navigation öffnen/schließen">☰</button>
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="../index.html" class="nav-link">Startseite</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle">Entertainmentangebote <span class="dropdown-arrow">▼</span></a>
+          <ul class="dropdown-menu">
+            <li><a href="schnitzeljagd.html" class="dropdown-link active">Schnitzeljagd</a></li>
+            <li><a href="raetselraum.html" class="dropdown-link">Rätselraum</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle">Kontakt & Anfahrt <span class="dropdown-arrow">▼</span></a>
+          <ul class="dropdown-menu">
+            <li><a href="kontakt.html" class="dropdown-link">Kontakt</a></li>
+            <li><a href="anfahrt.html" class="dropdown-link">Anfahrt</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero-Bereich -->
+  <header class="hero">
+    <div class="hero-content">
+      <h1>AR Schnitzeljagd Schloss Ebelsberg</h1>
+      <p>Begib dich auf eine interaktive Spurensuche durch die Geschichte Napoleons am Schloss Ebelsberg.</p>
+    </div>
+  </header>
+
+  <!-- Hauptinhalt -->
+  <main class="main-content">
+    <!-- Beschreibung -->
+    <section class="description-section">
+      <div class="container">
+        <h2>Deine historische Schnitzeljagd</h2>
+        <div class="description-grid">
+          <div class="description-item">
+            <div class="icon">🗺️</div>
+            <h3>Interaktive Karte</h3>
+            <p>Erkunde das Schlossgelände mit unserer AR-erweiterten Karte und entdecke versteckte Hinweise.</p>
+          </div>
+          <div class="description-item">
+            <div class="icon">🔍</div>
+            <h3>Historische Rätsel</h3>
+            <p>Löse knifflige Aufgaben rund um Napoleon Bonaparte und die Schlacht von Ebelsberg 1809.</p>
+          </div>
+          <div class="description-item">
+            <div class="icon">📱</div>
+            <h3>AR-Technologie</h3>
+            <p>Nutze dein Smartphone, um versteckte Inhalte zu entdecken und mit der Geschichte zu interagieren.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bestellformular -->
+    <section class="order-section">
+      <div class="container">
+        <h2>Schnitzeljagd buchen</h2>
+        <div class="order-form-container">
+          <form class="order-form" id="orderForm" method="POST" action="../scripts/buchung.php">
+            <div class="form-group">
+              <label for="name">Vollständiger Name *</label>
+              <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="email">E-Mail-Adresse *</label>
+                <input type="email" id="email" name="email" required>
+              </div>
+              <div class="form-group">
+                <label for="phone">Telefonnummer</label>
+                <input type="tel" id="phone" name="phone">
+              </div>
+            </div>
+
+            <!--TO BE CHANGED--> 
+            <div class="form-group checkbox-group">
+              <input type="checkbox" id="terms" name="terms" required>
+              <label for="terms">Ich habe die <a href="#" style="text-decoration: underline;">Allgemeinen Geschäftsbedingungen</a> und die <a href="#" style="text-decoration: underline;">Datenschutzerklärung</a> gelesen*</label>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn primary">Schnitzeljagd buchen</button>
+              <button type="reset" class="btn secondary">Formular zurücksetzen</button>
+            </div>
+          </form>
+
+          <div class="order-info">
+            <h3>Buchungsinformationen</h3>
+            <div class="info-item">
+              <strong>Dauer:</strong> ... Minuten
+            </div>
+            <div class="info-item">
+              <strong>Preis:</strong> ... €
+            </div>
+            <div class="info-item">
+              <strong>Mindestalter:</strong> ... Jahre
+            </div>
+            <div class="info-item">
+              <strong>Gruppengröße:</strong> ... Personen
+            </div>
+            <div class="info-item">
+              <strong>Ausrüstung:</strong> Smartphone erforderlich
+            </div>
+            <div class="info-item">
+              <strong>Sprache:</strong> Deutsch
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+<!-- Schnitzeljagd beitreten -->
+<section class="order-section join-section">
+  <div class="container">
+    <h2>Bereits gebucht? Schnitzeljagd beitreten</h2>
+    <form class="order-form join-form" method="POST" action="../scripts/buchungscode.php">
+      <div class="form-group">
+        <label for="joinCode">Buchungscode eingeben *</label>
+        <input type="text" id="joinCode" name="joinCode" placeholder="z. B. f8c9b1a2" required>
+        <p>Achtung: Nach der erstmaligen Nutzung, kann der Code 24h genutzt werden. Danach ist er ungültig.</p>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn primary">Beitreten</button>
+      </div>
+    </form>
+  </div>
+</section>
+<!-- FAQ Section -->
+    <section class="description-section">
+      <div class="container">
+        <h2>Häufig gestellte Fragen</h2>
+        <div class="description-grid">
+          <div class="description-item">
+            <h3>Welche Geräte werden unterstützt?</h3>
+            <p>Unsere AR-Erlebnis-App funktioniert auf allen modernen Smartphones (iOS 12+ und Android 8+) mit AR-Unterstützung.</p>
+          </div>
+          <div class="description-item">
+            <h3>Wie funktioniert ein Buchungscode</h3>
+            <p>Sie erhalten Ihren Buchungscode per E-Mail. Damit können Sie zu jeder Zeit spielen. Der Code ist nach der erstmaligen Nutzung 24h gültig.</p>
+          </div>
+          <div class="description-item">
+            <h3>Wie lange dauert das Erlebnis?</h3>
+            <p>Unser Erlebnis dauert etwa 60 Minuten.</p>
+          </div>
+          <div class="description-item">
+            <h3>Was kostet die Teilnahme?</h3>
+            <p>15€ pro Buchungscode. Mit einem Buchungscode kann die gesamte Truppe teilnehmen.</p>
+          </div>
+          <div class="description-item">
+            <h3>Gibt es Parkmöglichkeiten?</h3>
+            <p>Ja, kostenlose Parkplätze sind direkt am Schlossgelände verfügbar. Zusätzlich ist das Schloss gut mit öffentlichen Verkehrsmitteln erreichbar.</p>
+          </div>
+          <div class="description-item">
+            <h3>Ist das Ereignis für Kinder geeignet?</h3>
+            <p>Unser Erlebnis richtet sich an 16-18 Jährige.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2025 Schloss Ebelsberg AR Experience. Alle Rechte vorbehalten.</p>
+  </footer>
+
+  <script>
+    // Mobile Navigation Toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      const navToggle = document.querySelector('.nav-toggle');
+      const navMenu = document.querySelector('.nav-menu');
+      
+      navToggle.addEventListener('click', function() {
+        navMenu.classList.toggle('active');
+      });
+      
+      // Close menu when clicking on a link
+      document.querySelectorAll('.nav-link:not(.dropdown-toggle)').forEach(link => {
+        link.addEventListener('click', function() {
+          navMenu.classList.remove('active');
+        });
+      });
+
+      // Dropdown functionality
+      document.querySelectorAll('.dropdown').forEach(dropdown => {
+        const toggle = dropdown.querySelector('.dropdown-toggle');
+        const menu = dropdown.querySelector('.dropdown-menu');
+        
+        toggle.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          // Close other dropdowns
+          document.querySelectorAll('.dropdown').forEach(otherDropdown => {
+            if (otherDropdown !== dropdown) {
+              otherDropdown.classList.remove('active');
+            }
+          });
+          
+          // Toggle current dropdown
+          dropdown.classList.toggle('active');
+        });
+        
+        // Close dropdown when clicking on dropdown link
+        dropdown.querySelectorAll('.dropdown-link').forEach(link => {
+          link.addEventListener('click', function() {
+            dropdown.classList.remove('active');
+            navMenu.classList.remove('active');
+          });
+        });
+      });
+      
+      // Close dropdowns when clicking outside
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.dropdown')) {
+          document.querySelectorAll('.dropdown').forEach(dropdown => {
+            dropdown.classList.remove('active');
+          });
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

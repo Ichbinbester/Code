@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title data-i18n="title">Schloss Ebelsberg – AR Escape Erlebnis</title>
+  <link rel="stylesheet" href="style/style.css" />
+</head>
+<body>
+
+  <!-- Hauptnavigation mit integrierten Logos -->
+  <nav class="main-nav">
+    <div class="nav-container">
+      <!-- Logo-Bereich links -->
+      <div class="nav-logos">
+        <img src="images/logo_raetselraum.png" alt="Logo AR Rätselraum" />
+        <a href="https://www.htltraun.at/hp/public/" target="_blank" rel="noopener noreferrer">
+          <img src="images/logo_htltraun.png" alt="HTL Traun Logo" />
+        </a>
+        <img src="images/logo_schnitzel.png" alt="Logo Schnitzeljagd" />
+        <a href="https://www.realsim.info" target="_blank" rel="noopener noreferrer">
+          <img src="images/logo_realsim.png" alt="Realsim Logo" />
+        </a>
+      </div>
+
+      <!-- Hauptmenü mittig -->
+      <button class="nav-toggle" aria-label="Navigation öffnen/schließen">☰</button>
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="index.html" class="nav-link active" data-i18n="nav.home">Startseite</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle">
+            <span data-i18n="nav.entertainment">Entertainmentangebote</span>
+            <span class="dropdown-arrow">▼</span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="html/schnitzeljagd.html" class="dropdown-link" data-i18n="nav.treasure_hunt">Schnitzeljagd</a></li>
+            <li><a href="html/raetselraum.html" class="dropdown-link" data-i18n="nav.puzzle_room">Rätselraum</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle">
+            <span data-i18n="nav.contact_directions">Kontakt & Anfahrt</span>
+            <span class="dropdown-arrow">▼</span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="html/kontakt.html" class="dropdown-link" data-i18n="nav.contact">Kontakt</a></li>
+            <li><a href="html/anfahrt.html" class="dropdown-link" data-i18n="nav.directions">Anfahrt</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <!-- Sprachumschalter rechts -->
+      <div class="language-switcher">
+        <button class="lang-btn active" data-lang="de">DE</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero-Bereich -->
+  <header class="hero">
+    <div class="hero-content">
+      <h1 data-i18n="hero.title">AR Escape Erlebnis Schloss Ebelsberg</h1>
+      <p data-i18n="hero.subtitle">Entdecke Napoleons Spuren – direkt vor Ort mit deinem Smartphone.</p>
+
+      <nav class="cta-buttons" aria-label="Hauptnavigation">
+        <a href="html/raetselraum.html" class="btn primary" aria-label="Zum AR Rätselraum">
+          <span data-i18n="hero.btn_puzzle">🔐 Rätselraum</span>
+        </a>
+        <a href="html/schnitzeljagd.html" class="btn secondary" aria-label="Zur Schnitzeljagd">
+          <span data-i18n="hero.btn_hunt">🗺️ Schnitzeljagd</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p data-i18n="footer.copyright">&copy; 2025 Schloss Ebelsberg AR Experience. Alle Rechte vorbehalten.</p>
+  </footer>
+
+  <script src="scripts/translation.js"></script>
+  <script src="scripts/script.js"></script>
+
+</body>
+</html>

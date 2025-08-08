@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aufgabe 1</title>
+  <link rel="stylesheet" href="../../style/speech.css">
+</head>
+<body>
+
+  <img id="character" src="../../images/character1.png" alt="Charakter">
+
+  <div id="speech">Feldmarschall, der Kontakt zur Hauptarmee darf unter keinen Umständen abreißen. Unsere Boten werden abgefangen. Wir vermuten feindliche Späher in der Umgebung.</div>
+
+  <button class="button bottom-left" onclick="previous()" id="backBtn" style="display: none;">Zurück</button>
+  <button class="button bottom-right" onclick="next()" id="nextBtn">Weiter</button>
+
+  <script>
+    const lines = [
+      "Feldmarschall, der Kontakt zur Hauptarmee darf unter keinen Umständen abreißen. Unsere Boten werden abgefangen. Wir vermuten feindliche Späher in der Umgebung. ",
+      "Nur von einem strategisch günstigen Ort aus kann unser Reiter durchbrechen. Die Zukunft der Kommunikation liegt in Eurer Hand. Doch wägt klug ab - nur ein Fehler, und unsere Befehle fallen dem Feind in die Hände. "
+    ];
+
+    let index = 0;
+
+    function updateSpeech() {
+      const speechElement = document.getElementById("speech");
+      const backBtn = document.getElementById("backBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      
+      // Fade-Effekt
+      speechElement.style.opacity = '0';
+      
+      setTimeout(() => {
+        speechElement.innerHTML = lines[index];
+        speechElement.style.opacity = '1';
+      }, 200);
+      
+      backBtn.style.display = index > 0 ? "block" : "none";
+      nextBtn.innerHTML = "Weiter";
+    }
+
+    function next() {
+      if (index < lines.length - 1) {
+        index++;
+        updateSpeech();
+      } else {
+        // Fade-out-Effekt vor dem Seitenwechsel
+        document.body.classList.add('fade-out');
+        requestAnimationFrame(() => {
+        setTimeout(() => {
+          window.location.href = "../schnitzeljagd_aufgaben/task3/task3.html";
+        }, 500);
+        });
+      }
+    }
+
+    function previous() {
+      if (index > 0) {
+        index--;
+        updateSpeech();
+      }
+    }
+  </script>
+</body>
+</html>

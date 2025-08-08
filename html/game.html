@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AR Escape Game - Spiel</title>
+  <link rel="stylesheet" href="../style/game.css" />
+</head>
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest"></script>
+  <!-- Game Header -->
+  <header class="game-header">
+    <div class="header-content">
+      <button class="back-btn" onclick="window.history.back()">
+        <span class="back-arrow">←</span>
+      </button>
+      <h1 class="level-title" id="levelTitle">Level wird geladen...</h1>
+      <div class="game-info">
+        <span class="timer" id="gameTimer">00:00</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Camera Container -->
+  <div class="camera-container">
+    <video id="cameraVideo" autoplay playsinline muted></video>
+    <canvas id="cameraCanvas" style="display: none;"></canvas>
+    
+    <!-- AR Overlay -->
+    <div class="ar-overlay" id="arOverlay">
+      <!-- Level-specific AR elements will be inserted here -->
+    </div>
+    
+    <!-- Camera Controls -->
+    <div class="camera-controls">
+      <button class="control-btn capture-btn" id="captureBtn">
+        <span class="control-icon">📸</span>
+      </button>
+      <button class="control-btn" id="switchCameraBtn">
+        <span class="control-icon">🔄</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Game UI -->
+  <div class="game-ui">
+    <!-- Progress Panel -->
+    <div class="progress-panel" id="progressPanel">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="progress-text">
+        <span id="progressText">0% abgeschlossen</span>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="action-btn" id="hintBtn">💡 Hinweise</button>
+      <button class="action-btn" id="storyBtn">📖 Geschichte</button>
+    </div>
+  </div>
+
+  <!-- Hints Modal -->
+  <div class="modal-overlay" id="hintsModal">
+    <div class="modal-content hints-modal">
+      <div class="modal-header">
+        <h2>💡 Hinweise</h2>
+        <button class="modal-close" id="closeHints">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="hints-book">
+          <div class="hints-list" id="hintsList">
+
+            
+            <!-- Hint 1 - Fixed ID to match JavaScript -->
+            <div class="hint-line locked" id="hint1">
+              <div class="hint-number">1</div>
+              <div class="hint-info">
+                <div class="hint-title">Erster Hinweis</div>
+                <div class="hint-status" id="hint1Timer">Verfügbar in 1:00</div>
+              </div>
+              <div class="hint-content">
+                <p>Schauen Sie sich die Umgebung genau an. Manchmal verstecken sich wichtige Hinweise in alltäglichen Objekten.</p>
+              </div>
+            </div>
+            
+            <!-- Hint 2 - Fixed ID to match JavaScript -->
+            <div class="hint-line locked" id="hint2">
+              <div class="hint-number">2</div>
+              <div class="hint-info">
+                <div class="hint-title">Zweiter Hinweis</div>
+                <div class="hint-status" id="hint2Timer">Verfügbar in 2:00</div>
+              </div>
+              <div class="hint-content">
+                <p>Denken Sie daran, dass manche Rätsel eine bestimmte Reihenfolge haben. Versuchen Sie, Muster zu erkennen.</p>
+              </div>
+            </div>
+            
+            <!-- Hint 3 - Fixed ID to match JavaScript -->
+            <div class="hint-line locked" id="hint3">
+              <div class="hint-number">3</div>
+              <div class="hint-info">
+                <div class="hint-title">Dritter Hinweis</div>
+                <div class="hint-status" id="hint3Timer">Verfügbar in 3:00</div>
+              </div>
+              <div class="hint-content">
+                <p>Falls Sie immer noch nicht weiterkommen: Überprüfen Sie alle Ecken und vergessen Sie nicht, auch nach oben zu schauen!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Story Book Modal -->
+  <div class="modal-overlay" id="storyModal">
+    <div class="modal-content story-modal">
+      <div class="modal-header">
+        <h2>📖 Die Geschichte</h2>
+        <button class="modal-close" id="closeStory">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="story-book">
+          <div class="story-pages" id="storyPages">
+            <!-- Story content will be added here -->
+          </div>
+          <div class="story-navigation">
+            <button class="story-nav-btn" id="prevPageBtn">← Vorherige Seite</button>
+            <span class="page-indicator" id="pageIndicator">Seite 1 von 1</span>
+            <button class="story-nav-btn" id="nextPageBtn">Nächste Seite →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div class="modal-overlay" id="successModal">
+    <div class="modal-content success-modal">
+      <div class="modal-header">
+        <h2>Level Abgeschlossen!</h2>
+      </div>
+      <div class="modal-body">
+        <div class="success-content">
+          <div class="success-icon">🎉</div>
+          <p id="successMessage">Glückwunsch! Sie haben das Level erfolgreich abgeschlossen.</p>
+          <div class="completion-stats">
+            <div class="stat">
+              <span class="stat-label">Zeit:</span>
+              <span class="stat-value" id="completionTime">--:--</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Hinweise verwendet:</span>
+              <span class="stat-value" id="hintsUsed">0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn secondary" onclick="window.history.back()">Zurück zur Auswahl</button>
+        <button class="btn primary" id="nextLevelBtn">Nächstes Level</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../scripts/game.js"></script>
+</body>
+</html>

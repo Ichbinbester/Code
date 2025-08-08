@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title data-i18n="contact.title">Kontakt – Schloss Ebelsberg AR Experience</title>
+  <link rel="stylesheet" href="../style/style.css" />
+  <link rel="stylesheet" href="../style/kontakt.css" />
+</head>
+<body>
+
+  <!-- Hauptnavigation mit integrierten Logos -->
+  <nav class="main-nav">
+    <div class="nav-container">
+      <!-- Logo-Bereich links -->
+      <div class="nav-logos">
+        <img src="../images/logo_raetselraum.png" alt="Logo AR Rätselraum" />
+        <a href="https://www.htltraun.at/hp/public/" target="_blank" rel="noopener noreferrer">
+          <img src="../images/logo_htltraun.png" alt="HTL Traun Logo" />
+        </a>
+        <img src="../images/logo_schnitzel.png" alt="Logo Schnitzeljagd" />
+        <a href="https://www.realsim.info" target="_blank" rel="noopener noreferrer">
+          <img src="../images/logo_realsim.png" alt="Realsim Logo" />
+        </a>
+      </div>
+
+      <!-- Hauptmenü mittig -->
+      <button class="nav-toggle" aria-label="Navigation öffnen/schließen">☰</button>
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="../index.html" class="nav-link" data-i18n="nav.home">Startseite</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle">
+            <span data-i18n="nav.entertainment">Entertainmentangebote</span>
+            <span class="dropdown-arrow">▼</span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="schnitzeljagd.html" class="dropdown-link" data-i18n="nav.treasure_hunt">Schnitzeljagd</a></li>
+            <li><a href="raetselraum.html" class="dropdown-link" data-i18n="nav.puzzle_room">Rätselraum</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle">
+            <span data-i18n="nav.contact_directions">Kontakt & Anfahrt</span>
+            <span class="dropdown-arrow">▼</span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="kontakt.html" class="dropdown-link active" data-i18n="nav.contact">Kontakt</a></li>
+            <li><a href="anfahrt.html" class="dropdown-link" data-i18n="nav.directions">Anfahrt</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <!-- Sprachumschalter rechts -->
+      <div class="language-switcher">
+        <button class="lang-btn active" data-lang="de">DE</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="header-content">
+      <h1 data-i18n="contact.page_title">Kontakt- !!TO BE CHANGED!!</h1>
+      <p data-i18n="contact.page_subtitle">Haben Sie Fragen oder benötigen Sie Hilfe? Wir sind für Sie da!</p>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    
+    <!-- Contact Information Section -->
+    <section class="contact-info">
+      <div class="container">
+        <div class="contact-grid">
+          
+          <!-- General Contact -->
+          <div class="contact-card">
+            <div class="card-icon">
+              <span>📞</span>
+            </div>
+            <h3 data-i18n="contact.general.title">Allgemeine Anfragen</h3>
+            <div class="contact-details">
+              <p><strong data-i18n="contact.general.phone">Telefon:</strong> 0043 / 06493375364</p>
+              <p><strong data-i18n="contact.general.email">E-Mail:</strong> napoleon@realsim.at</p>
+              <p><strong data-i18n="contact.general.hours">Öffnungszeiten:</strong></p>
+              <p data-i18n="contact.general.hours_detail">Di-Do: 17:00 - 22:30 Uhr<br>Fr-So: 14:00 - 22:00 Uhr</p>
+            </div>
+          </div>
+
+          <!-- What to Bring -->
+          <div class="contact-card">
+            <div class="card-icon">
+              <span>🎒</span>
+            </div>
+            <h3 data-i18n="contact.bring.title">Was Sie mitbringen sollten</h3>
+            <div class="contact-details">
+              <p><strong data-i18n="contact.bring.room">Schnitzeljagd:</strong></p>
+              <ul>
+                <li data-i18n="contact.bring.phone">Smartphone</li>
+                <li data-i18n="contact.bring.clothes">Wetterfeste Kleidung & Bequeme Schuhe</li>
+                <li data-i18n="contact.bring.water">Trinkflasche</li>
+              </ul>
+              <p><strong data-i18n="contact.bring.room">Rätselraum:</strong></p>
+              <ul>
+                <li data-i18n="contact.bring.phone">Smartphone</li>
+                <li data-i18n="contact.bring.clothes">Wetterfeste Kleidung & Bequeme Schuhe</li>
+                <li data-i18n="contact.bring.water">Trinkflasche</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Duration and Capacity -->
+          <div class="contact-card">
+            <div class="card-icon">
+              <span>⏱️</span>
+            </div>
+            <h3 data-i18n="contact.duration.title">Dauer und Kapazität</h3>
+            <div class="contact-details">
+              <p><strong data-i18n="contact.duration.treasure_hunt">Schnitzeljagd:</strong></p>
+              <p data-i18n="contact.duration.treasure_hunt_detail">60-90 Minuten | 2-8 Personen</p>
+              <p><strong data-i18n="contact.duration.puzzle_room">Rätselraum:</strong></p>
+              <p data-i18n="contact.duration.puzzle_room_detail">45-60 Minuten | 2-6 Personen</p>
+              <p><strong data-i18n="contact.duration.availability">Verfügbarkeit:</strong></p>
+              <ul>
+                <li data-i18n="contact.duration.weekdays">Werktags: 9:00 - 18:00</li>
+                <li data-i18n="contact.duration.weekends">Wochenende: 10:00 - 16:00</li>
+                <li data-i18n="contact.duration.treasurehunt">Die Schnitzeljagd kann rund um die Uhr gespielt werden.</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+      <div class="container">
+        <h2 data-i18n="contact.faq.title">Häufig gestellte Fragen - !!TO BE CHANGED!!</h2>
+        
+        <div class="faq-grid">
+          <div class="faq-item">
+            <h3 data-i18n="contact.faq.q1">Welche Geräte werden unterstützt?</h3>
+            <p data-i18n="contact.faq.a1">Unsere AR-Erlebnis-App funktioniert auf allen modernen Smartphones (iOS 12+ und Android 8+) mit AR-Unterstützung.</p>
+          </div>
+          
+          <div class="faq-item">
+            <h3 data-i18n="contact.faq.q2">Wie lange dauert das Erlebnis?</h3>
+            <p data-i18n="contact.faq.a2">Die Schnitzeljagd dauert ca. 60-90 Minuten, der Rätselraum ca. 45-60 Minuten, je nach Teilnehmerzahl und Rätsellösungstempo.</p>
+          </div>
+          
+          <div class="faq-item">
+            <h3 data-i18n="contact.faq.q3">Ist eine Voranmeldung erforderlich?</h3>
+            <p data-i18n="contact.faq.a3">Für Gruppen ab 8 Personen empfehlen wir eine Voranmeldung. Einzelpersonen und kleine Gruppen können spontan teilnehmen.</p>
+          </div>
+          
+          <div class="faq-item">
+            <h3 data-i18n="contact.faq.q4">Was kostet die Teilnahme?</h3>
+            <p data-i18n="contact.faq.a4">Erwachsene: 12€, Kinder (6-14 Jahre): 8€, Studenten: 10€. Familientickets und Gruppentarife verfügbar.</p>
+          </div>
+          
+          <div class="faq-item">
+            <h3 data-i18n="contact.faq.q5">Gibt es Parkmöglichkeiten?</h3>
+            <p data-i18n="contact.faq.a5">Ja, kostenlose Parkplätze sind am Schlossgelände verfügbar. Zusätzlich ist das Schloss gut mit öffentlichen Verkehrsmitteln erreichbar.</p>
+          </div>
+          
+          <div class="faq-item">
+            <h3 data-i18n="contact.faq.q6">Ist das Erlebnis für Kinder geeignet?</h3>
+            <p data-i18n="contact.faq.a6">Ja, unsere Erlebnisse sind familienfreundlich gestaltet. Kinder ab 6 Jahren können mit Begleitung teilnehmen.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p data-i18n="footer.copyright">&copy; 2025 Schloss Ebelsberg AR Experience. Alle Rechte vorbehalten.</p>
+  </footer>
+
+  <script src="../scripts/translation.js"></script>
+  <script src="../scripts/script.js"></script>
+  <script src="../scripts/kontakt.js"></script>
+
+</body>
+</html><!DOCTYPE html>

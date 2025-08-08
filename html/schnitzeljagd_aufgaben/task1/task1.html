@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Aufgabe 1 – Caesar-Code</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Tipp-Button oben links -->
+  <button class="tip-button" onclick="showTip()">
+    <svg class="lightbulb" viewBox="0 0 24 24">
+      <path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.87-3.13-7-7-7zM9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1z"/>
+    </svg>
+  </button>
+
+  <!-- Tipp-Popup + Overlay -->
+  <div class="popup-overlay" id="popupOverlay" onclick="hideTip()"></div>
+  <div class="tip-popup" id="tipPopup">
+    <button class="close-btn" onclick="hideTip()">&times;</button>
+    <div class="popup-header">
+      <svg class="popup-icon" viewBox="0 0 24 24">
+        <path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.87-3.13-7-7-7zM9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1z"/>
+      </svg>
+      <h2 class="popup-title">Hilfreiche Tipps</h2>
+    </div>
+    <div class="popup-content">
+      <p>Der Generalmajor befiehlt, alle Meldungen 3 Buchstaben nach vorne zu lesen.</p>
+    </div>
+  </div>
+
+  <!-- Hauptinhalt: Rätsel -->
+  <div class="container">
+    <h1>Caesar-Code lösen</h1>
+    <div class="code-box">Abo Txdbk fj Mxoh fpq yilzhfboq</div>
+    <input type="text" id="userInput" placeholder="Deine Lösung hier eingeben">
+    <div id="feedback" class="message"></div>
+  </div>
+  <form id="taskForm" method="POST" action="/scripts/schnitzeljagd_aufgaben/task1.php" class="hidden">
+  <input type="hidden" name="name" id="playerName">
+  <input type="hidden" name="code" id="playerCode">
+  <input type="hidden" name="playercode" id="playerCodeHidden">
+  <input type="hidden" name="usedTip" id="usedTip" value="0">
+  <input type="hidden" name="action" id="taskAction"> <!-- solve / giveup -->
+</form>
+
+
+  <!-- Buttons unten rechts & links -->
+  <button class="button bottom-right" onclick="checkAnswer()">Überprüfen</button>
+  <button class="button bottom-left" onclick="skipTask()">Aufgeben</button>
+
+  <script src="task1.js"></script>
+</body>
+</html>
