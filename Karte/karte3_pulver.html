@@ -44,7 +44,43 @@
 
     // Zoome auf das Gebiet
     map.fitBounds(bounds);
+
+    // Standort des Users erfassen und als blauen Punkt anzeigen
+    map.locate({
+      watch: true,       // Live-Tracking
+      setView: true,     // Karte auf Standort zentrieren
+      maxZoom: 18,       // Maximaler Zoom bei Standortanzeige
+      enableHighAccuracy: true
+    });
+
+    // Event: Standort gefunden
+    function onLocationFound(e) {
+      const radius = e.accuracy / 2;
+
+      // Marker + Kreis um den Standort
+      L.marker(e.latlng, {icon: L.icon({
+          iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+        })})
+        .addTo(map)
+        .bindPopup("Du bist hier (±" + Math.round(radius) + " m)")
+        .openPopup();
+
+      L.circle(e.latlng, radius, {
+        color: 'blue',
+        fillColor: '#3f82ff',
+        fillOpacity: 0.3
+      }).addTo(map);
+    }
+
+    map.on('locationfound', onLocationFound);
+
+    // Event: Fehler beim Standortzugriff
+    map.on('locationerror', function(e) {
+      alert("Standort konnte nicht ermittelt werden: " + e.message);
+    });
   </script>
 </body>
-
 </html>
