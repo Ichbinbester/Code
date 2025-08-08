@@ -16,12 +16,8 @@
 </head>
 <body>
 
-  <!-- Überschrift -->
   <h1 id="map-title">Karte Ebelsberg 1809</h1>
-
-  <!-- Kartenbereich -->
   <div id="map"></div>
-
   <div id="speech">Die Truppen müssen aufgestellt werden</div>
 
   <!-- Leaflet JS -->
@@ -37,32 +33,62 @@
       [48.23540489297591, 14.268892952691758]  // Nordost
     );
 
-    // Karte in definierter Box
+    // Karte
     const map = L.map('map', {
       maxBounds: bounds,
       maxBoundsViscosity: 1.0,
       zoomControl: true
     });
 
-    // Hintergrund: OpenStreetMap
+    // Hintergrundkarte
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors',
       minZoom: 16,
       maxZoom: 19
     }).addTo(map);
 
-    // Zoome auf das Gebiet
     map.fitBounds(bounds);
 
-    // Locator hinzufügen
-    L.control.locate({
+    // Locator mit Live-Tracking + Fehlerbehandlung
+    const locateControl = L.control.locate({
       position: 'topleft',
+      setView: true,
+      watch: true,
+      enableHighAccuracy: true,
       flyTo: true,
       showPopup: false,
+      keepCurrentZoomLevel: true,
       strings: {
-        title: "Zeige meinen Standort"
+        title: "Meinen Standort anzeigen",
+        popup: "Du bist hier",
+        outsideMapBoundsMsg: "Du bist außerhalb des sichtbaren Kartenbereichs"
+      },
+      locateOptions: {
+        enableHighAccuracy: true
+      },
+      onLocationError: function(err) {
+        alert("⚠ Standort konnte nicht ermittelt werden: " + err.message +
+              "\nBitte GPS aktivieren und Browser-Zugriff erlauben.");
       }
     }).addTo(map);
+
+    // Funktion: GPS-Stream neu starten bei erneutem Button-Klick
+    map.on('locateactivate', function() {
+      console.log("GPS-Tracking gestartet");
+    });
+
+    // Direkt den Button-Click abfangen
+    document.addEventListener('click', function(e) {
+      if (e.target.closest('.leaflet-control-locate')) {
+        console.log("Locate-Button gedrückt – GPS neu starten");
+        map.stopLocate();
+        map.locate({
+          watch: true,
+          enableHighAccuracy: true,
+          setView: true
+        });
+      }
+    });
   </script>
 </body>
 </html>
