@@ -8,56 +8,25 @@
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
-  <style>
-    #next-button {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 10px 20px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-      z-index: 1000;
-      display: none;
-    }
-    #next-button:hover {
-      background-color: #45a049;
-    }
-    #speech {
-      position: fixed;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: white;
-      padding: 10px 20px;
-      border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-      z-index: 1000;
-      max-width: 80%;
-      text-align: center;
-    }
-    #map-title {
-      text-align: center;
-      margin-top: 10px;
-    }
-    #map {
-      width: 100%;
-      height: 100vh;
-    }
-  </style>
+  <!-- Eigene Styles -->
+  <link rel="stylesheet" href="karte.css" />
+
 </head>
 <body>
 
+  <!-- Titel -->
   <h1 id="map-title">Karte Ebelsberg 1809</h1>
+
+  <!-- Textbox -->
+  <div id="speech">Finde den Wagen im Park!</div>
+
+  <!-- Karte -->
   <div id="map"></div>
 
-  <div id="speech">Finde den Wagen im Park!</div>
-  <button id="next-button" onclick="goToNextScene()">Ziel erreicht! Weiter</button>
+  <!-- Weiter-Button -->
+  <button id="next-button" class="button bottom-right" onclick="goToNextScene()">Ziel erreicht! Weiter</button>
 
+  <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
     const bounds = L.latLngBounds(
@@ -65,7 +34,7 @@
       [48.23362715046137, 14.263541212910821]
     );
 
-    const zielKoordinate = L.latLng(48.23341152857084, 14.263133838323048); // Wagen-Position
+    const zielKoordinate = L.latLng(48.23341152857084, 14.263133838323048);
 
     const map = L.map('map', {
       maxBounds: bounds,
@@ -73,15 +42,21 @@
       zoomControl: true
     }).fitBounds(bounds);
 
-    // Tile-Layer (kann angepasst werden)
+    // Tile-Layer
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       minZoom: 16,
       maxZoom: 19,
     }).addTo(map);
 
-    // Zielmarker
-    const zielMarker = L.marker(zielKoordinate).addTo(map);
-    zielMarker.bindPopup("Hier findest du den Wagen!").openPopup();
+    // Wagen-Icon
+    const wagenIcon = L.icon({
+      iconUrl: 'wagen.png', // muss im selben Verzeichnis wie HTML liegen
+      iconSize: [40, 40],
+      iconAnchor: [20, 40]
+    });
+
+    // Zielmarker mit Wagen-Icon
+    const zielMarker = L.marker(zielKoordinate, { icon: wagenIcon }).addTo(map);
 
     // User-Marker + Genauigkeitskreis
     const userMarker = L.circleMarker([0, 0], {
@@ -106,21 +81,21 @@
       const accuracy = position.coords.accuracy;
       const userLatLng = L.latLng(lat, lng);
 
-      // Marker & Kreis aktualisieren
+      // Marker & Kreis bewegen
       userMarker.setLatLng(userLatLng);
       accuracyCircle.setLatLng(userLatLng).setRadius(accuracy);
 
-      // Karte folgt der Position (wie im fremden Code)
+      // Karte folgt der Position
       map.setView(userLatLng, 18);
 
-      // Distanz zum Ziel
+      // Entfernung berechnen
       const distance = userLatLng.distanceTo(zielKoordinate);
       if (distance < 10) {
         document.getElementById('next-button').style.display = 'block';
-        document.getElementById('speech').innerText = "Sehr gut! Nur " + Math.round(distance) + "m vom Ziel!";
+        document.getElementById('speech').innerText = "Sehr gut! Du hast den Wagen gefunden!";
       } else {
         document.getElementById('next-button').style.display = 'none';
-        document.getElementById('speech').innerText = "Du bist " + Math.round(distance) + "m entfernt. Folge dem Marker!";
+        document.getElementById('speech').innerText = "Finde den Wagen im Park!";
       }
     }
 
