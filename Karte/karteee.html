@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8"/>
+  <title>Leaflet Bereich messen & Standort</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <!-- Leaflet Measure Plugin CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-measure@3.4.0/dist/leaflet-measure.css"/>
+  <style>
+    html, body, #map { height:100%; margin:0; padding:0; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <!-- Leaflet Measure Plugin -->
+  <script src="https://cdn.jsdelivr.net/npm/leaflet-measure@3.4.0/dist/leaflet-measure.min.js"></script>
+  <script>
+    var map = L.map('map').fitWorld();
+
+    // OpenStreetMap Layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    // Geolocate und zeige blauen Punkt
+    map.locate({setView: true, maxZoom: 16, watch: true});
+
+    var marker, circle;
+
+    function onLocationFound(e) {
+      if (marker) {
+        map.removeLayer(marker);
+        map.removeLayer(circle);
+      }
+      marker = L.circleMarker(e.latlng, {
+        color: '#3388ff',
+        fillColor: '#3388ff',
+        fillOpacity: 0.8,
+        radius: 10
+      }).addTo(map);
+      circle = L.circle(e.latlng, e.accuracy, {
+        color: '#3388ff',
+        fillOpacity: 0.1,
+        weight: 1
+      }).addTo(map);
+    }
+
+    map.on('locationfound', onLocationFound);
+
+    // Bei Location Fehler
+    map.on('locationerror', function(e){
+      alert("Standort konnte nicht ermittelt werden: " + e.message);
+    });
+
+    // Leaflet Measure Tool (Flächenmessung)
+    L.control.measure({
+      primaryLengthUnit: 'meters',
+      primaryAreaUnit: 'sqmeters',
+      position: 'topleft',
+      activeColor: '#db4a29',
+      completedColor: '#446ad8'
+    }).addTo(map);
+  </script>
+</body>
+</html>
