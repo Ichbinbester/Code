@@ -22,9 +22,15 @@
   );
 
   // Karte
+  /*
   const map = L.map('map', {
     maxBounds: bounds,
     maxBoundsViscosity: 1.0,
+    zoomControl: true
+  });
+  */
+
+  const map = L.map('map', {
     zoomControl: true
   });
 
@@ -36,7 +42,7 @@
   }).addTo(map);
 
   // Zoome auf das Gebiet
-  map.fitBounds(bounds);
+//  map.fitBounds(bounds);
 
   // 1️⃣ Zielpunkt-Icon erstellen
   const zielIcon = L.icon({
