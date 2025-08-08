@@ -102,3 +102,28 @@ body::before {
     padding: 0.8rem 1.2rem;
   }
 }
+/* Pulsierender Ring um den Standortmarker */
+  .pulse-ring {
+    width: 30px;
+    height: 30px;
+    background: rgba(51, 136, 255, 0.4);
+    border-radius: 50%;
+    position: absolute;
+    top: -15px;
+    left: -15px;
+    animation: pulse 2s infinite;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* Puls-Animation */
+  @keyframes pulse {
+    0% {
+      transform: scale(0.8);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1.8);
+      opacity: 0;
+    }
+  }

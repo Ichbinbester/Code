@@ -10,7 +10,24 @@
 
   <!-- Eigene Styles -->
   <link rel="stylesheet" href="karte2.css" />
+  <style>
+    /* Pulsierender User-Standortmarker */
+    .user-location-marker {
+      width: 20px;
+      height: 20px;
+      background: rgba(51, 136, 255, 0.9);
+      border: 2px solid white;
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(51, 136, 255, 0.8);
+      animation: pulse 1.5s infinite;
+    }
 
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: 0.6; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
 </head>
 <body>
 
@@ -50,24 +67,23 @@
 
     // Wagen-Icon
     const wagenIcon = L.icon({
-      iconUrl: 'wagen.png', // muss im selben Verzeichnis wie HTML liegen
+      iconUrl: 'wagen.png',
       iconSize: [40, 40],
       iconAnchor: [20, 40]
     });
 
-    // Zielmarker mit Wagen-Icon
-    const zielMarker = L.marker(zielKoordinate, { icon: wagenIcon }).addTo(map);
+    // Zielmarker
+    L.marker(zielKoordinate, { icon: wagenIcon }).addTo(map);
 
-    // User-Marker + Genauigkeitskreis
-    const userMarker = L.circleMarker([0, 0], {
-      radius: 8,
-      fillColor: "#3388ff",
-      color: "#000",
-      weight: 1,
-      opacity: 1,
-      fillOpacity: 0.8
-    }).addTo(map);
+    // Neuer User-Marker als DivIcon
+    const userIcon = L.divIcon({
+      className: 'user-location-marker',
+      iconSize: [20, 20],
+      iconAnchor: [10, 10]
+    });
+    const userMarker = L.marker([0, 0], { icon: userIcon }).addTo(map);
 
+    // Genauigkeitskreis
     const accuracyCircle = L.circle([0, 0], {
       radius: 0,
       color: "#3388ff",
@@ -75,24 +91,32 @@
       fillOpacity: 0.2
     }).addTo(map);
 
+    let hasValidPosition = false;
+
     function updatePosition(position) {
+      if (!position || !position.coords) {
+        hasValidPosition = false;
+        document.getElementById('next-button').style.display = 'none';
+        document.getElementById('speech').innerText =
+          "📍 Standort nicht verfügbar. Bitte aktiviere GPS und erlaube den Standortzugriff.";
+        return;
+      }
+
+      hasValidPosition = true;
+
       const lat = position.coords.latitude;
       const lng = position.coords.longitude;
       const accuracy = position.coords.accuracy;
       const userLatLng = L.latLng(lat, lng);
 
-      // Marker & Kreis bewegen
       userMarker.setLatLng(userLatLng);
       accuracyCircle.setLatLng(userLatLng).setRadius(accuracy);
 
-      // Karte folgt der Position
-      map.setView(userLatLng, 18);
-
-      // Entfernung berechnen
       const distance = userLatLng.distanceTo(zielKoordinate);
       if (distance < 10) {
         document.getElementById('next-button').style.display = 'block';
-        document.getElementById('speech').innerText = "Sehr gut! Du hast den Wagen gefunden!";
+        document.getElementById('speech').innerText =
+          "✅ Sehr gut! Du hast den Wagen gefunden!";
       } else {
         document.getElementById('next-button').style.display = 'none';
         document.getElementById('speech').innerText = "Finde den Wagen im Park!";
@@ -100,18 +124,30 @@
     }
 
     function errorPosition(err) {
-      console.error(`GPS-Fehler (${err.code}): ${err.message}`);
-      document.getElementById('speech').innerText = "GPS-Fehler: " + err.message;
+      hasValidPosition = false;
+      document.getElementById('next-button').style.display = 'none';
+      document.getElementById('speech').innerText =
+        "⚠️ GPS-Fehler: " + err.message + " – Bitte Standort aktivieren.";
     }
 
-    if (navigator.geolocation) {
+    // Button blockieren, wenn GPS nicht aktiv
+    document.getElementById('next-button').addEventListener('click', function (e) {
+      if (!hasValidPosition) {
+        e.preventDefault();
+        alert("📍 Du musst zuerst deinen Standort aktivieren, um fortzufahren!");
+      }
+    });
+
+    // Live-Tracking starten
+    if ("geolocation" in navigator) {
       navigator.geolocation.watchPosition(updatePosition, errorPosition, {
         enableHighAccuracy: true,
         maximumAge: 0,
         timeout: 5000
       });
     } else {
-      alert("GPS wird nicht unterstützt.");
+      document.getElementById('speech').innerText =
+        "❌ Dein Gerät unterstützt keine GPS-Ortung.";
     }
 
     function goToNextScene() {
