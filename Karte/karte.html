@@ -49,6 +49,9 @@
 
     map.fitBounds(bounds);
 
+    // Marker für die aktuelle Position
+    let currentLocationMarker = null;
+
     // Locator mit Live-Tracking + Fehlerbehandlung
     const locateControl = L.control.locate({
       position: 'topleft',
@@ -69,6 +72,22 @@
       onLocationError: function(err) {
         alert("⚠ Standort konnte nicht ermittelt werden: " + err.message +
               "\nBitte GPS aktivieren und Browser-Zugriff erlauben.");
+      },
+      // Diese Funktion wird bei jeder Positionsaktualisierung aufgerufen
+      onLocationFound: function(e) {
+        // Wenn es bereits einen Marker gibt, entfernen wir ihn
+        if (currentLocationMarker) {
+          map.removeLayer(currentLocationMarker);
+        }
+        
+        // Neuen Marker erstellen
+        currentLocationMarker = L.marker(e.latlng, {
+          icon: L.divIcon({
+            className: 'live-location-marker',
+            html: '●', // Punkt als Marker
+            iconSize: [20, 20]
+          })
+        }).addTo(map);
       }
     }).addTo(map);
 
@@ -90,5 +109,14 @@
       }
     });
   </script>
+  
+  <style>
+    .live-location-marker {
+      color: red;
+      font-size: 20px;
+      text-align: center;
+      line-height: 20px;
+    }
+  </style>
 </body>
 </html>
