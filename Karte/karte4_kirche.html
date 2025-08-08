@@ -8,6 +8,20 @@
   <link rel="stylesheet" href="karte.css" />
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    #map {
+      height: calc(100vh - 4rem);
+    }
+    #speech {
+      padding: 1rem;
+      font-size: 1.2rem;
+      background-color: rgba(255, 255, 255, 0.9);
+    }
+  </style>
 </head>
 <body>
 
@@ -17,7 +31,7 @@
   <!-- Kartenbereich -->
   <div id="map"></div>
 
-  <div id="speech"> Bewege dich zur Kirche </div>
+  <div id="speech">Bewege dich zur Kirche</div>
 
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -44,7 +58,38 @@
 
     // Zoome auf das Gebiet
     map.fitBounds(bounds);
+
+    // Marker für Spielerposition
+    const playerMarker = L.marker([0, 0]).addTo(map);
+    playerMarker.bindTooltip("Du bist hier!");
+
+    // GPS-Tracking starten
+    function startTracking() {
+      if (navigator.geolocation) {
+        navigator.geolocation.watchPosition(
+          (position) => {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+
+            playerMarker.setLatLng([lat, lng]);
+            map.setView([lat, lng]);
+          },
+          (error) => {
+            console.error("Geolocation-Fehler:", error.message);
+          },
+          {
+            enableHighAccuracy: true,
+            maximumAge: 0,
+            timeout: 5000
+          }
+        );
+      } else {
+        console.error("Geolocation wird von diesem Browser nicht unterstützt.");
+      }
+    }
+
+    // Tracking beim Laden starten
+    startTracking();
   </script>
 </body>
-
 </html>
