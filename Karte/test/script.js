@@ -11,7 +11,7 @@ L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
 }).addTo(map);
 
 const marker = L.marker([0, 0]).addTo(map);
-
+/*
 function findLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.watchPosition(
@@ -35,6 +35,6 @@ function findLocation() {
     console.error("Geolocation is not supported by this browser.");
   }
 }
-
+*/
 //*******call function on page load if supported by the browser*******
 findLocation();
