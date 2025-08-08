@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Karte 5 - Aufstellung</title>
+
+  <!-- Karte CSS -->
+  <link rel="stylesheet" href="karte.css" />
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+  <!-- Locate Control CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
+</head>
+<body>
+
+  <!-- Überschrift -->
+  <h1 id="map-title">Karte Ebelsberg 1809</h1>
+
+  <!-- Kartenbereich -->
+  <div id="map"></div>
+
+  <div id="speech">Die Truppen müssen aufgestellt werden</div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <!-- Locate Control JS -->
+  <script src="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.js"></script>
+
+  <script>
+    // Neue Bereichsgrenzen (südwest + nordost)
+    const bounds = L.latLngBounds(
+      [48.22815831852428, 14.255301822615186], // Südwest
+      [48.23540489297591, 14.268892952691758]  // Nordost
+    );
+
+    // Karte in definierter Box
+    const map = L.map('map', {
+      maxBounds: bounds,
+      maxBoundsViscosity: 1.0,
+      zoomControl: true
+    });
+
+    // Hintergrund: OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors',
+      minZoom: 16,
+      maxZoom: 19
+    }).addTo(map);
+
+    // Zoome auf das Gebiet
+    map.fitBounds(bounds);
+
+    // Locator hinzufügen
+    L.control.locate({
+      position: 'topleft',
+      flyTo: true,
+      showPopup: false,
+      strings: {
+        title: "Zeige meinen Standort"
+      }
+    }).addTo(map);
+  </script>
+</body>
+</html>
