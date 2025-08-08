@@ -59,7 +59,7 @@
       const userLatLng = L.latLng(position.coords.latitude, position.coords.longitude);
       const distance = userLatLng.distanceTo(zielKoordinate);
 
-      if (distance < 30) {  // innerhalb von 30m
+      if (distance < 5) {  // innerhalb von 30m
         document.getElementById('next-button').style.display = 'block';
         document.getElementById('speech').innerText = "Sehr gut! Du hast den Ort erreicht!";
       }
