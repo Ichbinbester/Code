@@ -5,8 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Karte 1 - Park</title>
   <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
   <style>
+    #map {
+      height: calc(100vh - 3rem);
+    }
     #next-button {
       position: fixed;
       bottom: 20px;
@@ -40,47 +43,39 @@
     }
     #map-title {
       text-align: center;
-      margin-top: 10px;
+      margin: 10px 0;
     }
   </style>
 </head>
 <body>
-
   <!-- Überschrift -->
   <h1 id="map-title">Karte Ebelsberg 1809</h1>
-
+  
   <!-- Karte -->
-  <div id="map" style="width: 100%; height: 100vh;"></div>
-
+  <div id="map"></div>
+  
   <!-- Textanzeige oben -->
   <div id="speech">Finde den Wagen im Park!</div>
-
+  
   <!-- "Weiter"-Button, am Anfang unsichtbar -->
   <button id="next-button" onclick="goToNextScene()">Ziel erreicht! Weiter</button>
-
+  
   <!-- Leaflet -->
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
   <script>
-    const bounds = L.latLngBounds(
-      [48.23291179119622, 14.26078869192242],
-      [48.23362715046137, 14.263541212910821]
-    );
-
-    const zielKoordinate = L.latLng(48.23341152857084, 14.263133838323048); // Zielposition (Wagen)
-
-    const map = L.map('map', {
-      maxBounds: bounds,
-      maxBoundsViscosity: 1.0,
-      zoomControl: true
-    });
-
+    // Zielkoordinaten
+    const zielKoordinate = L.latLng(48.23341152857084, 14.263133838323048);
+    
+    // Karte initialisieren
+    const map = L.map('map').setView([zielKoordinate.lat, zielKoordinate.lng], 18);
+    
+    // Kartenlayer hinzufügen
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors',
       minZoom: 16,
-      maxZoom: 19,
+      maxZoom: 19
     }).addTo(map);
-
-    map.fitBounds(bounds);
-
+    
     // Marker für den Zielpunkt hinzufügen
     const zielMarker = L.marker(zielKoordinate, {
       icon: L.icon({
@@ -92,16 +87,16 @@
     }).addTo(map);
     
     zielMarker.bindPopup("Hier findest du den Wagen!").openPopup();
-
+    
     // Variable für den User-Position Marker
     let userPositionMarker = null;
     let userAccuracyCircle = null;
-
+    
     // Geofence-Logik
     function checkPosition(position) {
       const userLatLng = L.latLng(position.coords.latitude, position.coords.longitude);
       const distance = userLatLng.distanceTo(zielKoordinate);
-
+      
       // Aktualisiere oder erstelle den User-Position Marker
       if (!userPositionMarker) {
         userPositionMarker = L.circleMarker(userLatLng, {
@@ -125,7 +120,10 @@
         userAccuracyCircle.setLatLng(userLatLng);
         userAccuracyCircle.setRadius(position.coords.accuracy);
       }
-
+      
+      // Zentriere Karte auf User-Position
+      map.setView(userLatLng);
+      
       // Entfernungsprüfung
       if (distance < 10) {  // innerhalb von 10m
         document.getElementById('next-button').style.display = 'block';
@@ -135,25 +133,35 @@
         document.getElementById('speech').innerText = "Du bist " + Math.round(distance) + "m vom Ziel entfernt. Folge dem Marker!";
       }
     }
-
+    
     function errorPosition(err) {
       console.warn(`ERROR(${err.code}): ${err.message}`);
       document.getElementById('speech').innerText = "GPS-Fehler: " + err.message;
     }
-
-    if (navigator.geolocation) {
-      navigator.geolocation.watchPosition(checkPosition, errorPosition, {
-        enableHighAccuracy: true,
-        maximumAge: 0,
-        timeout: 5000
-      });
-    } else {
-      alert("GPS wird nicht unterstützt.");
+    
+    // GPS-Tracking starten
+    function startTracking() {
+      if (navigator.geolocation) {
+        navigator.geolocation.watchPosition(
+          checkPosition, 
+          errorPosition, 
+          {
+            enableHighAccuracy: true,
+            maximumAge: 0,
+            timeout: 5000
+          }
+        );
+      } else {
+        alert("GPS wird nicht unterstützt.");
+      }
     }
-
+    
     function goToNextScene() {
       window.location.href = "szene2_raetsel.html";
     }
+    
+    // Tracking beim Laden starten
+    startTracking();
   </script>
 </body>
 </html>
