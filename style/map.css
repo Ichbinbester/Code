@@ -59,6 +59,15 @@ body::before {
   position: relative;
 }
 
+/* Standort-Icon vom Code 3 */
+.my-location {
+  background: #2A93EE;
+  border: 2px solid white;
+  border-radius: 50%;
+  width: 12px;
+  height: 12px;
+}
+
 .button {
   position: fixed;
   padding: 1rem 1.5rem;
