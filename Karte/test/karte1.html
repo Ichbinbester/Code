@@ -46,16 +46,15 @@
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
-
   const zielKoordinate = L.latLng(48.23341152857084, 14.263133838323048);
 
   const map = L.map('map', {
     zoomControl: true
-  });
+  }).setView(zielKoordinate, 18);
 
   // Tile-Layer
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    minZoom: 16,
+    minZoom: 2,
     maxZoom: 19,
   }).addTo(map);
 
