@@ -25,10 +25,18 @@
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
-    // Neue Bereichsgrenzen (südwest + nordost)
+    // Bereichsgrenzen (südwest + nordost)
+    
+    /*
     const bounds = L.latLngBounds(
       [48.24359755374813, 14.324905196694772], // Südwest
       [48.24793531162874, 14.333512031428347]  // Nordost
+    );
+    */
+
+    const bounds = L.latLngBounds(
+      [48.23291179119622, 14.26078869192242],
+      [48.23362715046137, 14.263541212910821]
     );
 
     const zielKoordinate = L.latLng(48.23341152857084, 14.263133838323048);
