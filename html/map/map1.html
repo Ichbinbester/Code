@@ -14,7 +14,7 @@
   <!-- Überschrift -->
   <h1 id="map-title">Karte Ebelsberg 1809</h1>
 
-  <div id="speech"> Der Wagen ist im Park </div>
+  <div id="speech">  </div>
 
   <!-- Kartenbereich -->
   <div id="map"></div>
@@ -26,20 +26,12 @@
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
     // Bereichsgrenzen (südwest + nordost)
-    
-    /*
     const bounds = L.latLngBounds(
       [48.24359755374813, 14.324905196694772], // Südwest
       [48.24793531162874, 14.333512031428347]  // Nordost
     );
-    */
 
-    const bounds = L.latLngBounds(
-      [48.23291179119622, 14.26078869192242],
-      [48.23362715046137, 14.263541212910821]
-    );
-
-    const zielKoordinate = L.latLng(48.23341152857084, 14.263133838323048);
+    const zielKoordinate = L.latLng(48.24643135486091, 14.330302243615066);
 
     // Karte in definierter Box
     const map = L.map('map', {
@@ -91,7 +83,7 @@
           "✅ Sehr gut! Du hast den Wagen gefunden!";
       } else {
         document.getElementById('next-button').style.display = 'none';
-        document.getElementById('speech').innerText = "Finde den Wagen im Park!";
+        document.getElementById('speech').innerText = "Der Wagen ist im Park";
       }
     }
 
@@ -117,7 +109,7 @@
     document.getElementById('next-button').addEventListener('click', function (e) {
       if (!hasValidPosition) {
         e.preventDefault();
-        alert("📍 Du musst zuerst deinen Standort aktivieren, um fortzufahren!");
+        alert("Du musst zuerst deinen Standort aktivieren, um fortzufahren!");
       }
     });
 
