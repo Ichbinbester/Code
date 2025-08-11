@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Karte 1 - Park</title>
+  <!-- Karte CSS -->
+  <link rel="stylesheet" href="../../style/map.css" />
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+
+  <!-- Überschrift -->
+  <h1 id="map-title">Karte Ebelsberg 1809</h1>
+
+  <div id="speech"></div>
+
+  <!-- Kartenbereich -->
+  <div id="map"></div>
+
+  <!-- Weiter-Button -->
+  <button id="next-button" class="button bottom-right" onclick="window.location.href='../speeches/speech_task2_start.html'">Ziel erreicht! Weiter</button>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // Bereichsgrenzen (südwest + nordost)
+    const bounds = L.latLngBounds(
+      [48.24359755374813, 14.324905196694772], // Südwest
+      [48.24793531162874, 14.333512031428347]  // Nordost
+    );
+
+    // Karte in definierter Box
+    const map = L.map('map', {
+      maxBounds: bounds,
+      maxBoundsViscosity: 1.0,
+      zoomControl: true
+    });
+
+    // Hintergrund: OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors',
+      minZoom: 16,
+      maxZoom: 19
+    }).addTo(map);
+
+    // Zoome auf das Gebiet
+    map.fitBounds(bounds);
+
+    // ---------------- Marker-Setup ----------------
+    const markerData = [
+      { name: 'Wagen',        coords: [48.24643135486091, 14.330302243615066], iconUrl: '../../icons/wagon.png' },
+      { name: 'Wegkreuzung',  coords: [48.24542027838862, 14.332203753221865], iconUrl: '../../icons/spyglass.png' },
+      { name: 'Pulverkammer', coords: [48.24453629216522, 14.33015554960612], iconUrl: '../../icons/barrel.png' },
+      { name: 'Kirche',       coords: [48.24581589217339, 14.327677790069304], iconUrl: '../../icons/church.png' },
+      { name: 'Aufstellung',  coords: [48.24699044356416, 14.32639091991975], iconUrl: '../../icons/soldier.png' },
+      { name: 'Brücke',       coords: [48.24688437564445, 14.326019492517096], iconUrl: '../../icons/bridge.png' }
+    ];
+
+    const markers = markerData.map(data => {
+      return L.marker(data.coords, {
+        icon: L.icon({
+          iconUrl: data.iconUrl,
+          iconSize: [20, 20]
+        })
+      }).addTo(map);
+    });
+
+    // Beim Zoomen Icons vergrößern/verkleinern
+    map.on('zoom', () => {
+      let z = map.getZoom();
+      let size = 20 + z; // Basisgröße + Zoom-Level
+      markers.forEach((marker, i) => {
+        marker.setIcon(L.icon({
+          iconUrl: markerData[i].iconUrl,
+          iconSize: [size, size]
+        }));
+      });
+    });
+    // ------------------------------------------------
+
+  </script>
+</body>
+</html>
