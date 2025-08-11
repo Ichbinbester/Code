@@ -61,7 +61,7 @@
     let locationMarker = null;
     let hasValidPosition = false;
 
-    // Tracking-Logik vom Code 2 (ohne Accuracy-Kreis)
+    // Tracking-Logik
     function checkPosition(position) {
       const userLatLng = L.latLng(position.coords.latitude, position.coords.longitude);
       const distance = userLatLng.distanceTo(zielKoordinate);

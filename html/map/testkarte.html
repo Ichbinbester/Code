@@ -4,44 +4,64 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Karte 1 - Park</title>
-
+  <!-- Karte CSS -->
+  <link rel="stylesheet" href="../../style/map.css" />
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-
-  <!-- Eigene Styles -->
-  <link rel="stylesheet" href="../../style/map.css" />
 </head>
 <body>
 
-  <!-- Titel -->
+  <!-- Überschrift -->
   <h1 id="map-title">Karte Ebelsberg 1809</h1>
 
-  <!-- Textbox -->
-  <div id="speech">Finde den Wagen im Park!</div>
+  <div id="speech">  </div>
 
-  <!-- Karte -->
+  <!-- Kartenbereich -->
   <div id="map"></div>
 
   <!-- Weiter-Button -->
-  <button id="next-button" class="button bottom-right" onclick="goToNextScene()">Ziel erreicht! Weiter</button>
+  <button id="next-button" class="button bottom-right"  onclick="window.location.href='../speeches/speech_task2_start.html'">Ziel erreicht! Weiter</button>
 
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
+    // Bereichsgrenzen (südwest + nordost)
+    /*
+    const bounds = L.latLngBounds(
+      [48.24359755374813, 14.324905196694772], // Südwest
+      [48.24793531162874, 14.333512031428347]  // Nordost
+    );
+    */
+
+    const bounds = L.latLngBounds(
+    [48.23291179119622, 14.26078869192242],
+    [48.23362715046137, 14.263541212910821]
+  );
+
+    // const zielKoordinate = L.latLng(48.24643135486091, 14.330302243615066);
     const zielKoordinate = L.latLng(48.23341152857084, 14.263133838323048);
 
-    // Karte erstellen
-    const map = L.map('map').setView([zielKoordinate.lat, zielKoordinate.lng], 18);
 
-    // Tile-Layer
+    // Karte in definierter Box
+    const map = L.map('map', {
+      maxBounds: bounds,
+      maxBoundsViscosity: 1.0,
+      zoomControl: true
+    });
+
+    // Hintergrund: OpenStreetMap
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors',
       minZoom: 16,
-      maxZoom: 19,
+      maxZoom: 19
     }).addTo(map);
 
-    // Wagen-Icon
+    // Zoome auf das Gebiet
+    map.fitBounds(bounds);
+
+    // Ziel-Marker
     const wagenIcon = L.icon({
-      iconUrl: '../icons/wagen.png',
+      iconUrl: '../../icons/wagen.png',
       iconSize: [40, 40],
       iconAnchor: [20, 40]
     });
@@ -50,7 +70,7 @@
     let locationMarker = null;
     let hasValidPosition = false;
 
-    // Tracking-Logik vom Code 2 (ohne Accuracy-Kreis)
+    // Tracking-Logik
     function checkPosition(position) {
       const userLatLng = L.latLng(position.coords.latitude, position.coords.longitude);
       const distance = userLatLng.distanceTo(zielKoordinate);
@@ -72,7 +92,7 @@
           "✅ Sehr gut! Du hast den Wagen gefunden!";
       } else {
         document.getElementById('next-button').style.display = 'none';
-        document.getElementById('speech').innerText = "Finde den Wagen im Park!";
+        document.getElementById('speech').innerText = "Der Wagen ist im Park";
       }
     }
 
@@ -98,14 +118,11 @@
     document.getElementById('next-button').addEventListener('click', function (e) {
       if (!hasValidPosition) {
         e.preventDefault();
-        alert("📍 Du musst zuerst deinen Standort aktivieren, um fortzufahren!");
+        alert("Du musst zuerst deinen Standort aktivieren, um fortzufahren!");
       }
     });
 
-    function goToNextScene() {
-      window.location.href = "szene2_raetsel.html";
-    }
   </script>
-
 </body>
+
 </html>
