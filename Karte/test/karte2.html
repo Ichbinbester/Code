@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Leaflet Standort</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #map { height: 100vh; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // Karte erstellen
+    var map = L.map('map').setView([48.2, 14.3], 15);
+
+    // Basiskarte
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap-Mitwirkende'
+    }).addTo(map);
+
+    // Standort automatisch finden & blauen Punkt anzeigen
+    map.locate({ setView: true, watch: true, maxZoom: 18 });
+
+    // Event: Standort gefunden
+    var marker, circle;
+    map.on('locationfound', function(e) {
+      if (marker) {
+        marker.setLatLng(e.latlng);
+        circle.setLatLng(e.latlng).setRadius(e.accuracy);
+      } else {
+        marker = L.marker(e.latlng).addTo(map);
+        circle = L.circle(e.latlng, e.accuracy).addTo(map);
+      }
+    });
+
+    // Event: Fehler
+    map.on('locationerror', function(e) {
+      alert("Standort konnte nicht ermittelt werden.");
+    });
+  </script>
+</body>
+</html>
