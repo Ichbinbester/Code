@@ -46,113 +46,87 @@
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
-    const bounds = L.latLngBounds(
-      [48.23291179119622, 14.26078869192242],
-      [48.23362715046137, 14.263541212910821]
-    );
+  const bounds = L.latLngBounds(
+    [48.23291179119622, 14.26078869192242],
+    [48.23362715046137, 14.263541212910821]
+  );
 
-    const zielKoordinate = L.latLng(48.23341152857084, 14.263133838323048);
+  const zielKoordinate = L.latLng(48.23341152857084, 14.263133838323048);
 
-    const map = L.map('map', {
-      maxBounds: bounds,
-      maxBoundsViscosity: 1.0,
-      zoomControl: true
-    }).fitBounds(bounds);
+  const map = L.map('map', {
+    maxBounds: bounds,
+    maxBoundsViscosity: 1.0,
+    zoomControl: true
+  }).fitBounds(bounds);
 
-    // Tile-Layer
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      minZoom: 16,
-      maxZoom: 19,
-    }).addTo(map);
+  // Tile-Layer
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    minZoom: 16,
+    maxZoom: 19,
+  }).addTo(map);
 
-    // Wagen-Icon
-    const wagenIcon = L.icon({
-      iconUrl: '../icons/wagen.png',
-      iconSize: [40, 40],
-      iconAnchor: [20, 40]
-    });
+  // Wagen-Icon
+  const wagenIcon = L.icon({
+    iconUrl: '../icons/wagen.png',
+    iconSize: [40, 40],
+    iconAnchor: [20, 40]
+  });
+  L.marker(zielKoordinate, { icon: wagenIcon }).addTo(map);
 
-    // Zielmarker
-    L.marker(zielKoordinate, { icon: wagenIcon }).addTo(map);
+  let locationMarker = null;
+  let hasValidPosition = false;
 
-    // Neuer User-Marker als DivIcon
-    const userIcon = L.divIcon({
-      className: 'user-location-marker',
-      iconSize: [20, 20],
-      iconAnchor: [10, 10]
-    });
-    const userMarker = L.marker([0, 0], { icon: userIcon }).addTo(map);
-
-    // Genauigkeitskreis
-    const accuracyCircle = L.circle([0, 0], {
-      radius: 0,
-      color: "#3388ff",
-      weight: 1,
-      fillOpacity: 0.2
-    }).addTo(map);
-
-    let hasValidPosition = false;
-
-    function updatePosition(position) {
-      if (!position || !position.coords) {
-        hasValidPosition = false;
-        document.getElementById('next-button').style.display = 'none';
-        document.getElementById('speech').innerText =
-          "📍 Standort nicht verfügbar. Bitte aktiviere GPS und erlaube den Standortzugriff.";
-        return;
-      }
-
-      hasValidPosition = true;
-
-      const lat = position.coords.latitude;
-      const lng = position.coords.longitude;
-      const accuracy = position.coords.accuracy;
-      const userLatLng = L.latLng(lat, lng);
-
-      userMarker.setLatLng(userLatLng);
-      accuracyCircle.setLatLng(userLatLng).setRadius(accuracy);
-
-      const distance = userLatLng.distanceTo(zielKoordinate);
-      if (distance < 10) {
-        document.getElementById('next-button').style.display = 'block';
-        document.getElementById('speech').innerText =
-          "✅ Sehr gut! Du hast den Wagen gefunden!";
-      } else {
-        document.getElementById('next-button').style.display = 'none';
-        document.getElementById('speech').innerText = "Finde den Wagen im Park!";
-      }
-    }
-
-    function errorPosition(err) {
-      hasValidPosition = false;
-      document.getElementById('next-button').style.display = 'none';
-      document.getElementById('speech').innerText =
-        "⚠️ GPS-Fehler: " + err.message + " – Bitte Standort aktivieren.";
-    }
-
-    // Button blockieren, wenn GPS nicht aktiv
-    document.getElementById('next-button').addEventListener('click', function (e) {
-      if (!hasValidPosition) {
-        e.preventDefault();
-        alert("📍 Du musst zuerst deinen Standort aktivieren, um fortzufahren!");
-      }
-    });
-
-    // Live-Tracking starten
-    if ("geolocation" in navigator) {
-      navigator.geolocation.watchPosition(updatePosition, errorPosition, {
-        enableHighAccuracy: true,
-        maximumAge: 0,
-        timeout: 5000
+  // Standort gefunden -> Punkt setzen oder verschieben
+  map.on('locationfound', function (e) {
+    hasValidPosition = true;
+    if (!locationMarker) {
+      var myIcon = L.divIcon({
+        className: 'user-location-marker',
+        iconSize: [20, 20],
+        iconAnchor: [10, 10]
       });
+      locationMarker = L.marker(e.latlng, { icon: myIcon }).addTo(map);
     } else {
-      document.getElementById('speech').innerText =
-        "❌ Dein Gerät unterstützt keine GPS-Ortung.";
+      locationMarker.setLatLng(e.latlng);
     }
 
-    function goToNextScene() {
-      window.location.href = "szene2_raetsel.html";
+    const distance = e.latlng.distanceTo(zielKoordinate);
+    if (distance < 10) {
+      document.getElementById('next-button').style.display = 'block';
+      document.getElementById('speech').innerText =
+        "✅ Sehr gut! Du hast den Wagen gefunden!";
+    } else {
+      document.getElementById('next-button').style.display = 'none';
+      document.getElementById('speech').innerText = "Finde den Wagen im Park!";
     }
-  </script>
+  });
+
+  map.on('locationerror', function (err) {
+    hasValidPosition = false;
+    document.getElementById('next-button').style.display = 'none';
+    document.getElementById('speech').innerText =
+      "⚠️ GPS-Fehler: " + err.message + " – Bitte Standort aktivieren.";
+  });
+
+  // GPS-Tracking starten
+  map.locate({
+    watch: true,
+    setView: false,
+    enableHighAccuracy: true
+  });
+
+  // Button blockieren, wenn GPS nicht aktiv
+  document.getElementById('next-button').addEventListener('click', function (e) {
+    if (!hasValidPosition) {
+      e.preventDefault();
+      alert("📍 Du musst zuerst deinen Standort aktivieren, um fortzufahren!");
+    }
+  });
+
+  function goToNextScene() {
+    window.location.href = "szene2_raetsel.html";
+  }
+</script>
+
 </body>
 </html>
