@@ -3,128 +3,120 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Karte 1 - Park</title>
+  <title>Karte 5 - Aufstellung</title>
+
+  <!-- Karte CSS -->
+  <link rel="stylesheet" href="karte.css" />
 
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
-  <!-- Eigene Styles (Design aus Code 1) -->
-  <link rel="stylesheet" href="karte2.css" />
-  <style>
-    /* Standort-Icon vom Code 3 */
-    .my-location {
-      background: #2A93EE;
-      border: 2px solid white;
-      border-radius: 50%;
-      width: 12px;
-      height: 12px;
-    }
-  </style>
+  <!-- Locate Control CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
 </head>
 <body>
 
-  <!-- Titel -->
   <h1 id="map-title">Karte Ebelsberg 1809</h1>
-
-  <!-- Textbox -->
-  <div id="speech">Finde den Wagen im Park!</div>
-
-  <!-- Karte -->
   <div id="map"></div>
-
-  <!-- Weiter-Button -->
-  <button id="next-button" class="button bottom-right" onclick="goToNextScene()">Ziel erreicht! Weiter</button>
+  <div id="speech">Die Truppen müssen aufgestellt werden</div>
 
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <!-- Locate Control JS -->
+  <script src="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.js"></script>
+
   <script>
+    // Neue Bereichsgrenzen (südwest + nordost)
     const bounds = L.latLngBounds(
-      [48.23291179119622, 14.26078869192242],
-      [48.23362715046137, 14.263541212910821]
+      [48.22815831852428, 14.255301822615186], // Südwest
+      [48.23540489297591, 14.268892952691758]  // Nordost
     );
 
-    const zielKoordinate = L.latLng(48.23341152857084, 14.263133838323048);
-
-    // Karte erstellen mit Bounds
+    // Karte
     const map = L.map('map', {
       maxBounds: bounds,
       maxBoundsViscosity: 1.0,
       zoomControl: true
-    }).fitBounds(bounds);
+    });
 
-    // Tile-Layer
+    // Hintergrundkarte
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors',
       minZoom: 16,
-      maxZoom: 19,
+      maxZoom: 19
     }).addTo(map);
 
-    // Wagen-Icon
-    const wagenIcon = L.icon({
-      iconUrl: '../icons/wagen.png',
-      iconSize: [40, 40],
-      iconAnchor: [20, 40]
-    });
-    L.marker(zielKoordinate, { icon: wagenIcon }).addTo(map);
+    map.fitBounds(bounds);
 
-    let locationMarker = null;
-    let hasValidPosition = false;
+    // Marker für die aktuelle Position
+    let currentLocationMarker = null;
 
-    // Tracking-Logik vom Code 2 (ohne Accuracy-Kreis)
-    function checkPosition(position) {
-      const userLatLng = L.latLng(position.coords.latitude, position.coords.longitude);
-      const distance = userLatLng.distanceTo(zielKoordinate);
-
-      // Standortmarker setzen oder aktualisieren
-      if (!locationMarker) {
-        const myIcon = L.divIcon({ className: 'my-location' });
-        locationMarker = L.marker(userLatLng, { icon: myIcon }).addTo(map);
-      } else {
-        locationMarker.setLatLng(userLatLng);
+    // Locator mit Live-Tracking + Fehlerbehandlung
+    const locateControl = L.control.locate({
+      position: 'topleft',
+      setView: true,
+      watch: true,
+      enableHighAccuracy: true,
+      flyTo: true,
+      showPopup: false,
+      keepCurrentZoomLevel: true,
+      strings: {
+        title: "Meinen Standort anzeigen",
+        popup: "Du bist hier",
+        outsideMapBoundsMsg: "Du bist außerhalb des sichtbaren Kartenbereichs"
+      },
+      locateOptions: {
+        enableHighAccuracy: true
+      },
+      onLocationError: function(err) {
+        alert("⚠ Standort konnte nicht ermittelt werden: " + err.message +
+              "\nBitte GPS aktivieren und Browser-Zugriff erlauben.");
+      },
+      // Diese Funktion wird bei jeder Positionsaktualisierung aufgerufen
+      onLocationFound: function(e) {
+        // Wenn es bereits einen Marker gibt, entfernen wir ihn
+        if (currentLocationMarker) {
+          map.removeLayer(currentLocationMarker);
+        }
+        
+        // Neuen Marker erstellen
+        currentLocationMarker = L.marker(e.latlng, {
+          icon: L.divIcon({
+            className: 'live-location-marker',
+            html: '●', // Punkt als Marker
+            iconSize: [20, 20]
+          })
+        }).addTo(map);
       }
+    }).addTo(map);
 
-      hasValidPosition = true;
-
-      // Zielprüfung
-      if (distance < 10) {
-        document.getElementById('next-button').style.display = 'block';
-        document.getElementById('speech').innerText =
-          "✅ Sehr gut! Du hast den Wagen gefunden!";
-      } else {
-        document.getElementById('next-button').style.display = 'none';
-        document.getElementById('speech').innerText = "Finde den Wagen im Park!";
-      }
-    }
-
-    function errorPosition(err) {
-      hasValidPosition = false;
-      document.getElementById('next-button').style.display = 'none';
-      document.getElementById('speech').innerText =
-        "⚠️ GPS-Fehler: " + err.message + " – Bitte Standort aktivieren.";
-    }
-
-    // GPS-Tracking starten
-    if (navigator.geolocation) {
-      navigator.geolocation.watchPosition(
-        checkPosition,
-        errorPosition,
-        { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
-      );
-    } else {
-      alert("GPS wird nicht unterstützt.");
-    }
-
-    // Button blockieren, wenn GPS nicht aktiv
-    document.getElementById('next-button').addEventListener('click', function (e) {
-      if (!hasValidPosition) {
-        e.preventDefault();
-        alert("📍 Du musst zuerst deinen Standort aktivieren, um fortzufahren!");
-      }
+    // Funktion: GPS-Stream neu starten bei erneutem Button-Klick
+    map.on('locateactivate', function() {
+      console.log("GPS-Tracking gestartet");
     });
 
-    function goToNextScene() {
-      window.location.href = "szene2_raetsel.html";
-    }
+    // Direkt den Button-Click abfangen
+    document.addEventListener('click', function(e) {
+      if (e.target.closest('.leaflet-control-locate')) {
+        console.log("Locate-Button gedrückt – GPS neu starten");
+        map.stopLocate();
+        map.locate({
+          watch: true,
+          enableHighAccuracy: true,
+          setView: true
+        });
+      }
+    });
   </script>
-
+  
+  <style>
+    .live-location-marker {
+      color: red;
+      font-size: 20px;
+      text-align: center;
+      line-height: 20px;
+    }
+  </style>
 </body>
 </html>
