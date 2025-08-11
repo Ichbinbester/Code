@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Karte 1 - Park</title>
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+  <!-- Eigene Styles (Design aus Code 1) -->
+  <link rel="stylesheet" href="karte2.css" />
+  <style>
+    /* Standort-Icon vom Code 3 */
+    .my-location {
+      background: #2A93EE;
+      border: 2px solid white;
+      border-radius: 50%;
+      width: 12px;
+      height: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Titel -->
+  <h1 id="map-title">Karte Ebelsberg 1809</h1>
+
+  <!-- Textbox -->
+  <div id="speech">Finde den Wagen im Park!</div>
+
+  <!-- Karte -->
+  <div id="map"></div>
+
+  <!-- Weiter-Button -->
+  <button id="next-button" class="button bottom-right" onclick="goToNextScene()">Ziel erreicht! Weiter</button>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    const zielKoordinate = L.latLng(48.23341152857084, 14.263133838323048);
+
+    // Karte erstellen
+    const map = L.map('map').setView([zielKoordinate.lat, zielKoordinate.lng], 18);
+
+    // Tile-Layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      minZoom: 16,
+      maxZoom: 19,
+    }).addTo(map);
+
+    // Wagen-Icon
+    const wagenIcon = L.icon({
+      iconUrl: '../icons/wagen.png',
+      iconSize: [40, 40],
+      iconAnchor: [20, 40]
+    });
+    L.marker(zielKoordinate, { icon: wagenIcon }).addTo(map);
+
+    let locationMarker = null;
+    let hasValidPosition = false;
+
+    // Tracking-Logik vom Code 2 (ohne Accuracy-Kreis)
+    function checkPosition(position) {
+      const userLatLng = L.latLng(position.coords.latitude, position.coords.longitude);
+      const distance = userLatLng.distanceTo(zielKoordinate);
+
+      // Standortmarker setzen oder aktualisieren
+      if (!locationMarker) {
+        const myIcon = L.divIcon({ className: 'my-location' });
+        locationMarker = L.marker(userLatLng, { icon: myIcon }).addTo(map);
+      } else {
+        locationMarker.setLatLng(userLatLng);
+      }
+
+      hasValidPosition = true;
+
+      // Zielprüfung
+      if (distance < 10) {
+        document.getElementById('next-button').style.display = 'block';
+        document.getElementById('speech').innerText =
+          "✅ Sehr gut! Du hast den Wagen gefunden!";
+      } else {
+        document.getElementById('next-button').style.display = 'none';
+        document.getElementById('speech').innerText = "Finde den Wagen im Park!";
+      }
+    }
+
+    function errorPosition(err) {
+      hasValidPosition = false;
+      document.getElementById('next-button').style.display = 'none';
+      document.getElementById('speech').innerText =
+        "⚠️ GPS-Fehler: " + err.message + " – Bitte Standort aktivieren.";
+    }
+
+    // GPS-Tracking starten
+    if (navigator.geolocation) {
+      navigator.geolocation.watchPosition(
+        checkPosition,
+        errorPosition,
+        { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
+      );
+    } else {
+      alert("GPS wird nicht unterstützt.");
+    }
+
+    // Button blockieren, wenn GPS nicht aktiv
+    document.getElementById('next-button').addEventListener('click', function (e) {
+      if (!hasValidPosition) {
+        e.preventDefault();
+        alert("📍 Du musst zuerst deinen Standort aktivieren, um fortzufahren!");
+      }
+    });
+
+    function goToNextScene() {
+      window.location.href = "szene2_raetsel.html";
+    }
+  </script>
+
+</body>
+</html>
