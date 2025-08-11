@@ -2,11 +2,19 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>Leaflet Standort</title>
+  <title>Leaflet Blauer Standortpunkt</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <style>
     #map { height: 100vh; }
+    /* Einfacher blauer Punkt */
+    .my-location {
+      background: #2A93EE;
+      border: 2px solid white;
+      border-radius: 50%;
+      width: 12px;
+      height: 12px;
+    }
   </style>
 </head>
 <body>
@@ -16,28 +24,36 @@
     // Karte erstellen
     var map = L.map('map').setView([48.2, 14.3], 15);
 
-    // Basiskarte
+    // OpenStreetMap-Kartenlayer
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap-Mitwirkende'
     }).addTo(map);
 
-    // Standort automatisch finden & blauen Punkt anzeigen
-    map.locate({ setView: true, watch: true, maxZoom: 18 });
+    var locationMarker, locationCircle;
 
-    // Event: Standort gefunden
-    var marker, circle;
+    // Standort finden & live verfolgen
+    map.locate({ watch: true, setView: true, maxZoom: 18 });
+
     map.on('locationfound', function(e) {
-      if (marker) {
-        marker.setLatLng(e.latlng);
-        circle.setLatLng(e.latlng).setRadius(e.accuracy);
+      if (!locationMarker) {
+        // Blauer Punkt
+        var myIcon = L.divIcon({ className: 'my-location' });
+        locationMarker = L.marker(e.latlng, { icon: myIcon }).addTo(map);
+        // Kreis um den Punkt (Genauigkeit)
+        locationCircle = L.circle(e.latlng, e.accuracy, {
+          color: '#136AEC',
+          fillColor: '#136AEC',
+          fillOpacity: 0.15,
+          weight: 2
+        }).addTo(map);
       } else {
-        marker = L.marker(e.latlng).addTo(map);
-        circle = L.circle(e.latlng, e.accuracy).addTo(map);
+        // Punkt & Kreis aktualisieren
+        locationMarker.setLatLng(e.latlng);
+        locationCircle.setLatLng(e.latlng).setRadius(e.accuracy);
       }
     });
 
-    // Event: Fehler
-    map.on('locationerror', function(e) {
+    map.on('locationerror', function() {
       alert("Standort konnte nicht ermittelt werden.");
     });
   </script>
