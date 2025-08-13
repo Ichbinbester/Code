@@ -58,28 +58,7 @@
     });
     L.marker(zielKoordinate, { icon: wagenIcon }).addTo(map);
 
-    // Startgröße
-    const wagenMarker = L.marker(zielKoordinate).addTo(map);
-
-    function updateWagenIconSize() {
-      const zoom = map.getZoom();
-      const size = zoom * 2.5; // Skalierungsfaktor anpassen
-      const anchor = [size / 2, size];
-
-      const newIcon = L.icon({
-        iconUrl: '../../icons/wagon.png', // gleiche Bild-URL
-        iconSize: [size, size],           // neue Größe
-        iconAnchor: anchor
-      });
-
-      wagenMarker.setIcon(newIcon); // komplett neues Icon setzen
-    }
-
-    map.on('zoomend', updateWagenIconSize);
-    map.whenReady(updateWagenIconSize);
-
     
-
     let locationMarker = null;
     let hasValidPosition = false;
 
