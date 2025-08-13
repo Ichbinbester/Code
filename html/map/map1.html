@@ -50,13 +50,33 @@
     // Zoome auf das Gebiet
     map.fitBounds(bounds);
 
-    // Ziel-Marker
-    const wagenIcon = L.icon({
-      iconUrl: '../../icons/wagen.png',
-      iconSize: [40, 40],
-      iconAnchor: [20, 40]
+    // Ziel-Marker (Startgröße, z. B. bei minZoom)
+    let wagenIcon = L.icon({
+      iconUrl: '../../icons/wagon.png',
+      iconSize: [10, 10], // Startgröße
+      iconAnchor: [10, 20]
     });
-    L.marker(zielKoordinate, { icon: wagenIcon }).addTo(map);
+
+    const wagenMarker = L.marker(zielKoordinate, { icon: wagenIcon }).addTo(map);
+
+    // Funktion zum Anpassen der Markergröße je nach Zoom
+    function updateWagenIconSize() {
+      const zoom = map.getZoom();
+      // Größe wächst linear mit der Zoomstufe
+      const size = zoom * 2.5; // Faktor anpassen für gewünschte Skalierung
+      const anchor = [size / 2, size]; // Anker bleibt proportional
+      wagenMarker.setIcon(L.icon({
+        iconUrl: '../../icons/wagon.png',
+        iconSize: [size, size],
+        iconAnchor: anchor
+      }));
+    }
+
+    // Beim Laden und bei jedem Zoomen aktualisieren
+    map.on('zoomend', updateWagenIconSize);
+    map.whenReady(updateWagenIconSize);
+
+
 
     let locationMarker = null;
     let hasValidPosition = false;
