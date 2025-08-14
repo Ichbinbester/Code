@@ -1,0 +1,44 @@
+[
+  {
+    "id": "map1",
+    "ziel": [48.24643135486091, 14.330302243615066],
+    "icon": "wagon.png",
+    "text": "Sehr gut! Du hast den Wagen gefunden!",
+    "next": "../speeches/speech_task2_start.html"
+  },
+  {
+    "id": "map2",
+    "ziel": [48.24542027838862, 14.332203753221865],
+    "icon": "spyglass.png",
+    "text": "Sehr gut! Du bist bei der Wegkreuzung angekommen!",
+    "next": "../speeches/speech_task3_start.html"
+  },
+  {
+    "id": "map3",
+    "ziel": [48.24453629216522, 14.33015554960612],
+    "icon": "powder.png",
+    "text": "Sehr gut! Du hast die Pulverkammer gefunden!",
+    "next": "../speeches/speech_task4_start.html"
+  },
+  {
+    "id": "map4",
+    "ziel": [48.24581589217339, 14.3290000000000],
+    "icon": "church.png",
+    "text": "Sehr gut! Du bist bei der Kirche angekommen!",
+    "next": "../speeches/speech_task5_start.html"
+  },
+  {
+    "id": "map5",
+    "ziel": [48.2461000000000, 14.3310000000000],
+    "icon": "cannon.png",
+    "text": "Sehr gut! Du hast die Kanonenstellung erreicht!",
+    "next": "../speeches/speech_task6_start.html"
+  },
+  {
+    "id": "map6",
+    "ziel": [48.2450000000000, 14.3285000000000],
+    "icon": "flag.png",
+    "text": "Sehr gut! Du hast den letzten Posten erreicht!",
+    "next": "../speeches/speech_end.html"
+  }
+]
