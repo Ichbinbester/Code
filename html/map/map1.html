@@ -31,7 +31,7 @@
     [48.24793531162874, 14.333512031428347]  // Nordost
   );
 
-  const zielKoordinate = L.latLng(48.23335537265896, 14.262213778449722);
+  const zielKoordinate = L.latLng(48.24643135486091, 14.330302243615066);
 
   const map = L.map('map', {
     maxBounds: bounds,
@@ -46,11 +46,11 @@
   }).addTo(map);
 
   map.fitBounds(bounds);
-
+  
   const wagenIcon = L.icon({
     iconUrl: '../../icons/wagon.png',
-    iconSize: [20, 20],
-    iconAnchor: [20, 40]
+    iconSize: [25, 25],
+    iconAnchor: [15, 20]
   });
   L.marker(zielKoordinate, { icon: wagenIcon }).addTo(map);
 
