@@ -1,125 +1,95 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Karte 1 - Park</title>
-  <!-- Karte CSS -->
-  <link rel="stylesheet" href="../../style/map.css" />
-  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-</head>
-<body>
+<script>
+  // Bereichsgrenzen (südwest + nordost)
+  const bounds = L.latLngBounds(
+    [48.24359755374813, 14.324905196694772], // Südwest
+    [48.24793531162874, 14.333512031428347]  // Nordost
+  );
 
-  <!-- Überschrift -->
-  <h1 id="map-title">Karte Ebelsberg 1809</h1>
+  const zielKoordinate = L.latLng(48.23335537265896, 14.262213778449722);
 
-  <div id="speech">  </div>
+  const map = L.map('map', {
+    maxBounds: bounds,
+    maxBoundsViscosity: 1.0,
+    zoomControl: true
+  });
 
-  <!-- Kartenbereich -->
-  <div id="map"></div>
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors',
+    minZoom: 16,
+    maxZoom: 19
+  }).addTo(map);
 
-  <!-- Weiter-Button -->
-  <button id="next-button" class="button bottom-right"  onclick="window.location.href='../speeches/speech_task2_start.html'">Ziel erreicht! Weiter</button>
+  map.fitBounds(bounds);
 
-  <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script>
-    // Bereichsgrenzen (südwest + nordost)
-    const bounds = L.latLngBounds(
-      [48.24359755374813, 14.324905196694772], // Südwest
-      [48.24793531162874, 14.333512031428347]  // Nordost
-    );
+  const wagenIcon = L.icon({
+    iconUrl: '../../icons/wagon.png',
+    iconSize: [20, 20],
+    iconAnchor: [20, 40]
+  });
+  L.marker(zielKoordinate, { icon: wagenIcon }).addTo(map);
 
-    //const zielKoordinate = L.latLng(48.24643135486091, 14.330302243615066);
-    const zielKoordinate = L.latLng(48.23335537265896, 14.262213778449722);
-    // Karte in definierter Box
-    const map = L.map('map', {
-      maxBounds: bounds,
-      maxBoundsViscosity: 1.0,
-      zoomControl: true
-    });
+  let locationMarker = null;
+  let hasValidPosition = false;
+  let hasAlertedOutOfBounds = false; // Flag für Bounds-Alert
 
-    // Hintergrund: OpenStreetMap
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors',
-      minZoom: 16,
-      maxZoom: 19
-    }).addTo(map);
+  function checkPosition(position) {
+    const userLatLng = L.latLng(position.coords.latitude, position.coords.longitude);
+    const distance = userLatLng.distanceTo(zielKoordinate);
 
-    // Zoome auf das Gebiet
-    map.fitBounds(bounds);
-
-    // Ziel-Marker
-    const wagenIcon = L.icon({
-      iconUrl: '../../icons/wagon.png',
-      iconSize: [20, 20],
-      iconAnchor: [20, 40]
-    });
-    L.marker(zielKoordinate, { icon: wagenIcon }).addTo(map);
-
-    
-    let locationMarker = null;
-    let hasValidPosition = false;
-
-    // Tracking-Logik
-    function checkPosition(position) {
-      const userLatLng = L.latLng(position.coords.latitude, position.coords.longitude);
-      const distance = userLatLng.distanceTo(zielKoordinate);
-
-      // Standortmarker setzen oder aktualisieren
-      if (!locationMarker) {
-        const myIcon = L.divIcon({ className: 'my-location' });
-        locationMarker = L.marker(userLatLng, { icon: myIcon }).addTo(map);
-      } else {
-        locationMarker.setLatLng(userLatLng);
-      }
-
-       // Prüfung: außerhalb der Bounds
-      if (!bounds.contains(userLatLng)) {
-        alert("⚠️ Du befindest dich außerhalb des Spielfelds!");
-      }
-
-      hasValidPosition = true;
-
-      // Zielprüfung
-      if (distance < 10) {
-        document.getElementById('next-button').style.display = 'block';
-        document.getElementById('speech').innerText =
-          "Sehr gut! Du hast den Wagen gefunden!";
-      } else {
-        document.getElementById('next-button').style.display = 'none';
-        document.getElementById('speech').innerText = "Der Wagen ist im Park";
-      }
-    }
-
-    function errorPosition(err) {
-      hasValidPosition = false;
-      document.getElementById('next-button').style.display = 'none';
-      document.getElementById('speech').innerText =
-        "⚠️ GPS-Fehler: " + err.message + " – Bitte Standort aktivieren.";
-    }
-
-    // GPS-Tracking starten
-    if (navigator.geolocation) {
-      navigator.geolocation.watchPosition(
-        checkPosition,
-        errorPosition,
-        { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
-      );
+    // Standortmarker setzen oder aktualisieren
+    if (!locationMarker) {
+      const myIcon = L.divIcon({ className: 'my-location' });
+      locationMarker = L.marker(userLatLng, { icon: myIcon }).addTo(map);
     } else {
-      alert("GPS wird nicht unterstützt.");
+      locationMarker.setLatLng(userLatLng);
     }
 
-    // Button blockieren, wenn GPS nicht aktiv
-    document.getElementById('next-button').addEventListener('click', function (e) {
-      if (!hasValidPosition) {
-        e.preventDefault();
-        alert("Du musst zuerst deinen Standort aktivieren, um fortzufahren!");
-      }
-    });
+    hasValidPosition = true;
 
-  </script>
-</body>
+    // 📌 Prüfung: außerhalb der Bounds -> nur einmal Alert pro Verlassen
+    if (!bounds.contains(userLatLng) && !hasAlertedOutOfBounds) {
+      alert("⚠️ Du bist außerhalb des Spielfelds!");
+      hasAlertedOutOfBounds = true;
+    }
+    // Wenn wieder innerhalb -> Flag zurücksetzen
+    if (bounds.contains(userLatLng)) {
+      hasAlertedOutOfBounds = false;
+    }
 
-</html>
+    // Zielprüfung
+    if (distance < 10) {
+      document.getElementById('next-button').style.display = 'block';
+      document.getElementById('speech').innerText =
+        "Sehr gut! Du hast den Wagen gefunden!";
+    } else {
+      document.getElementById('next-button').style.display = 'none';
+      document.getElementById('speech').innerText = "Der Wagen ist im Park";
+    }
+  }
+
+  function errorPosition(err) {
+    hasValidPosition = false;
+    document.getElementById('next-button').style.display = 'none';
+    document.getElementById('speech').innerText =
+      "⚠️ GPS-Fehler: " + err.message + " – Bitte Standort aktivieren.";
+  }
+
+  // GPS-Tracking starten
+  if (navigator.geolocation) {
+    navigator.geolocation.watchPosition(
+      checkPosition,
+      errorPosition,
+      { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
+    );
+  } else {
+    alert("GPS wird nicht unterstützt.");
+  }
+
+  // Button blockieren, wenn GPS nicht aktiv
+  document.getElementById('next-button').addEventListener('click', function (e) {
+    if (!hasValidPosition) {
+      e.preventDefault();
+      alert("Du musst zuerst deinen Standort aktivieren, um fortzufahren!");
+    }
+  });
+</script>
