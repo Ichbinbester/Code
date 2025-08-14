@@ -1,4 +1,30 @@
-<script>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Karte 1 - Park</title>
+  <!-- Karte CSS -->
+  <link rel="stylesheet" href="../../style/map.css" />
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+
+  <!-- Überschrift -->
+  <h1 id="map-title">Karte Ebelsberg 1809</h1>
+
+  <div id="speech">  </div>
+
+  <!-- Kartenbereich -->
+  <div id="map"></div>
+
+  <!-- Weiter-Button -->
+  <button id="next-button" class="button bottom-right"  onclick="window.location.href='../speeches/speech_task2_start.html'">Ziel erreicht! Weiter</button>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
   // Bereichsgrenzen (südwest + nordost)
   const bounds = L.latLngBounds(
     [48.24359755374813, 14.324905196694772], // Südwest
@@ -93,3 +119,7 @@
     }
   });
 </script>
+
+</body>
+
+</html>
