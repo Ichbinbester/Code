@@ -1,11 +1,125 @@
-<!-- FABIAN -->
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Karte 4 - Kirche </title>
+  <!-- Karte CSS -->
+  <link rel="stylesheet" href="../../style/map.css" />
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 <body>
-    <button onclick="window.location.href='../speeches/speech_task6_start.html'" style="font-size: 3rem;">Weiter</button><br>
+
+  <!-- Überschrift -->
+  <h1 id="map-title">Karte Ebelsberg 1809</h1>
+
+  <div id="speech">  </div>
+
+  <!-- Kartenbereich -->
+  <div id="map"></div>
+
+  <!-- Weiter-Button -->
+  <button id="next-button" class="button bottom-right"  onclick="window.location.href='../speeches/speech_task6_start.html'">Ziel erreicht! Weiter</button>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+  // Bereichsgrenzen (südwest + nordost)
+  const bounds = L.latLngBounds(
+    [48.24359755374813, 14.324905196694772], // Südwest
+    [48.24793531162874, 14.333512031428347]  // Nordost
+  );
+
+  const zielKoordinate = L.latLng(48.24699044356416, 14.32639091991975);
+
+  const map = L.map('map', {
+    maxBounds: bounds,
+    maxBoundsViscosity: 1.0,
+    zoomControl: true
+  });
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors',
+    minZoom: 16,
+    maxZoom: 19
+  }).addTo(map);
+
+  map.fitBounds(bounds);
+  
+  const soldierIcon = L.icon({
+    iconUrl: '../../icons/soldier.png',
+    iconSize: [25, 25],
+    iconAnchor: [15, 20]
+  });
+  L.marker(zielKoordinate, { icon: soldierIcon }).addTo(map);
+
+  let locationMarker = null;
+  let hasValidPosition = false;
+  let hasAlertedOutOfBounds = false; // Flag für Bounds-Alert
+
+  function checkPosition(position) {
+    const userLatLng = L.latLng(position.coords.latitude, position.coords.longitude);
+    const distance = userLatLng.distanceTo(zielKoordinate);
+
+    // Standortmarker setzen oder aktualisieren
+    if (!locationMarker) {
+      const myIcon = L.divIcon({ className: 'my-location' });
+      locationMarker = L.marker(userLatLng, { icon: myIcon }).addTo(map);
+    } else {
+      locationMarker.setLatLng(userLatLng);
+    }
+
+    hasValidPosition = true;
+
+    // außerhalb der Bounds -> nur einmal Alert pro Verlassen
+    if (!bounds.contains(userLatLng) && !hasAlertedOutOfBounds) {
+      alert("⚠️ Du bist außerhalb des Spielfelds!");
+      hasAlertedOutOfBounds = true;
+    }
+    // Wenn wieder innerhalb -> Flag zurücksetzen
+    if (bounds.contains(userLatLng)) {
+      hasAlertedOutOfBounds = false;
+    }
+
+    // Zielprüfung
+    if (distance < 10) {
+      document.getElementById('next-button').style.display = 'block';
+      document.getElementById('speech').innerText =
+        "Sehr gut! Du bist bei den Soldaten angekommen!";
+    } else {
+      document.getElementById('next-button').style.display = 'none';
+      document.getElementById('speech').innerText = "Bewege dich zu den Soldaten";
+    }
+  }
+
+  function errorPosition(err) {
+    hasValidPosition = false;
+    document.getElementById('next-button').style.display = 'none';
+    document.getElementById('speech').innerText =
+      "⚠️ GPS-Fehler: " + err.message + " – Bitte Standort aktivieren.";
+  }
+
+  // GPS-Tracking starten
+  if (navigator.geolocation) {
+    navigator.geolocation.watchPosition(
+      checkPosition,
+      errorPosition,
+      { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
+    );
+  } else {
+    alert("GPS wird nicht unterstützt.");
+  }
+
+  // Button blockieren, wenn GPS nicht aktiv
+  document.getElementById('next-button').addEventListener('click', function (e) {
+    if (!hasValidPosition) {
+      e.preventDefault();
+      alert("Du musst zuerst deinen Standort aktivieren, um fortzufahren!");
+    }
+  });
+</script>
+
 </body>
+
 </html>
