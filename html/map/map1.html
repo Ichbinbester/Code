@@ -75,13 +75,18 @@
         locationMarker.setLatLng(userLatLng);
       }
 
+       // Prüfung: außerhalb der Bounds
+      if (!bounds.contains(userLatLng)) {
+        alert("⚠️ Du befindest dich außerhalb des Spielfelds!");
+      }
+
       hasValidPosition = true;
 
       // Zielprüfung
       if (distance < 10) {
         document.getElementById('next-button').style.display = 'block';
         document.getElementById('speech').innerText =
-          "✅ Sehr gut! Du hast den Wagen gefunden!";
+          "Sehr gut! Du hast den Wagen gefunden!";
       } else {
         document.getElementById('next-button').style.display = 'none';
         document.getElementById('speech').innerText = "Der Wagen ist im Park";
