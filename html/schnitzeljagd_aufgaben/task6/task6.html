@@ -1,12 +1,142 @@
-<!-- FABIAN Karte -->
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aufgabe 6 – Truppenaufstellung</title>
+
+  <link rel="stylesheet" href="../../../style/map.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    .soldiers-container {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 15px;
+      z-index: 1000;
+    }
+    .soldier {
+      width: 50px;
+      height: 50px;
+      cursor: grab;
+    }
+    #next-button {
+      position: absolute;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 1rem 1.5rem;
+      font-size: 1.1rem;
+      border: 3px solid #8b4513;
+      border-radius: 15px;
+      cursor: pointer;
+      display: none;
+      z-index: 1000;
+      background: linear-gradient(145deg, #b8860b, #daa520);
+      color: #f4f1e8;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      font-family: 'Cinzel', serif;
+    }
+    #next-button:hover {
+      background: linear-gradient(145deg, #daa520, #b8860b);
+    }
+  </style>
 </head>
 <body>
-    <button onclick="window.location.href='../../speeches/speech_task6_nok.html'" style="font-size: 3rem;">Falsch</button><br>
-    <button onclick="window.location.href='../../speeches/speech_task6_ok.html'" style="font-size: 3rem;">Richtig</button>
+
+<h1 id="map-title">Aufstellung der Truppen</h1>
+
+<div id="speech">Ziehe die Einheiten auf ihre Position und klicke auf die Marker für Infos.</div>
+
+<div id="map"></div>
+
+<div class="soldiers-container">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/1/12/Infanterie_icon_historisch.png" class="soldier" id="infanterie" draggable="true" alt="Infanterie">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/23/Kavallerie_icon_historisch.png" class="soldier" id="kavallerie" draggable="true" alt="Kavallerie">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/3/34/Artillerie_icon_historisch.png" class="soldier" id="artillerie" draggable="true" alt="Artillerie">
+</div>
+
+<button id="next-button">Weiter</button>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+  // Leaflet-Karte initialisieren
+  var map = L.map('map').setView([48.245, 14.330], 17);
+
+  // Dummy Overlay
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors',
+    minZoom: 15,
+    maxZoom: 19
+  }).addTo(map);
+
+  // Zielpositionen
+  const ziele = [
+    {lat: 48.2452, lng: 14.3305, name: 'Infanterie', info: 'Die Infanterie stellt die Frontlinie sicher.', occupied: false},
+    {lat: 48.2447, lng: 14.3310, name: 'Kavallerie', info: 'Kavallerie positioniert für Flankenangriff.', occupied: false},
+    {lat: 48.2450, lng: 14.3300, name: 'Artillerie', info: 'Artillerie aufgestellt für Distanzbeschuss.', occupied: false}
+  ];
+
+  // Ziel-Marker sichtbar
+  ziele.forEach(ziel => {
+    L.circle([ziel.lat, ziel.lng], {
+      color: 'red',
+      fillColor: '#f03',
+      fillOpacity: 0.4,
+      radius: 5
+    }).addTo(map);
+  });
+
+  // Drag-and-Drop
+  const soldiers = document.querySelectorAll('.soldier');
+  let dragged = null;
+
+  soldiers.forEach(s => {
+    s.addEventListener('dragstart', e => { dragged = e.target; });
+  });
+
+  map.getContainer().addEventListener('dragover', e => e.preventDefault());
+  map.getContainer().addEventListener('drop', e => {
+    e.preventDefault();
+    if (!dragged) return;
+
+    var rect = map.getContainer().getBoundingClientRect();
+    var x = e.clientX - rect.left;
+    var y = e.clientY - rect.top;
+    var latlng = map.containerPointToLatLng([x, y]);
+
+    var marker = L.marker(latlng, {
+      icon: L.icon({ iconUrl: dragged.src, iconSize: [40, 40] })
+    }).addTo(map);
+
+    dragged.style.display = 'none';
+
+    // Prüfen Nähe zu Ziel
+    ziele.forEach(ziel => {
+      if (!ziel.occupied) {
+        var distance = map.distance(latlng, [ziel.lat, ziel.lng]);
+        if (distance < 10) {
+          marker.setLatLng([ziel.lat, ziel.lng]);
+          ziel.occupied = true;
+
+          // Klickbar für Info
+          marker.on('click', () => {
+            document.getElementById('speech').innerHTML = `<strong>${ziel.name}</strong>: ${ziel.info}`;
+          });
+        }
+      }
+    });
+
+    // Alle platziert?
+    if (ziele.every(z => z.occupied)) {
+      document.getElementById('next-button').style.display = 'block';
+    }
+
+    dragged = null;
+  });
+</script>
+
 </body>
 </html>
