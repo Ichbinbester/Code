@@ -1,13 +1,117 @@
-<!-- FABIAN Karte -->
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aufgabe 3 – Botenroute wählen</title>
+
+  <!-- Karte CSS -->
+  <link rel="stylesheet" href="../../../style/map.css" />
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    /* Zusätzliche Routen-Optik */
+    .route {
+      cursor: pointer;
+    }
+    .pros {
+      color: #228B22;
+      font-weight: bold;
+    }
+    .cons {
+      color: #8B0000;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-    <button onclick="window.location.href='../../speeches/speech_task3_nok_north.html'" style="font-size: 3rem;">Norden</button><br>
-    <button onclick="window.location.href='../../speeches/speech_task3_nok_north.html'" style="font-size: 3rem;">Süden</button><br>
-    <button onclick="window.location.href='../../speeches/speech_task3_ok.html'" style="font-size: 3rem;">Richtig</button>
+
+  <h1 id="map-title">Route des Boten</h1>
+
+  <div id="speech">Wähle die beste Route für den Boten.</div>
+
+  <div id="map"></div>
+
+  <!-- Weiter-Button -->
+  <button id="next-button" class="button bottom-right" style="display:none;">
+    Ziel erreicht! Weiter
+  </button>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    const startKoordinate = L.latLng(48.24542027838862, 14.332203753221865);
+
+    // Karte erstellen
+    const map = L.map('map').setView(startKoordinate, 17);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors',
+      minZoom: 15,
+      maxZoom: 19
+    }).addTo(map);
+
+    // Startpunkt
+    L.marker(startKoordinate).addTo(map);
+
+    // Routen-Daten
+    const routes = [
+      { // Norden FALSCH
+        coords: [startKoordinate, [48.2460, 14.3320], [48.2465, 14.3330]],
+        color: '#b22222', // rot
+        pros: 'Schnell, direkte Strecke',
+        cons: 'Gefahr durch Feinde',
+        link: '../../speeches/speech_task3_nok_north.html' 
+      },
+      { // Osten RICHTIG
+        coords: [startKoordinate, [48.2452, 14.3315], [48.2448, 14.3325]],
+        color: '#2e8b57',
+        pros: 'Versteckt, sicher',
+        cons: 'Etwas länger',
+        link: '../speeches/speech_task3_ok.html'
+      },
+      { // Süden FALSCH
+        coords: [startKoordinate, [48.2462, 14.3302], [48.2468, 14.3295]],
+        color: '#1e90ff',
+        pros: 'Schöne Aussicht',
+        cons: 'Sehr langer Umweg',
+        link: '../../speeches/speech_task3_nok_south.html' 
+      }
+    ];
+
+    let selectedPolyline = null; // aktuell ausgewählte Route
+    const polylines = [];
+
+    // Funktion zum Hinzufügen der Routen
+    routes.forEach(route => {
+      const polyline = L.polyline(route.coords, {
+        color: route.color,
+        weight: 5,
+        opacity: 0.8,
+        className: 'route'
+      }).addTo(map);
+
+      polylines.push(polyline);
+
+      polyline.on('click', () => {
+        // Alle Routen zurücksetzen
+        polylines.forEach(pl => pl.setStyle({ weight: 5, opacity: 0.8 }));
+
+        // Aktuelle Route hervorheben
+        polyline.setStyle({ weight: 8, opacity: 1 });
+
+        selectedPolyline = polyline;
+
+        // Info-Text aktualisieren
+        document.getElementById('speech').innerHTML =
+          `<span class="pros">Pros:</span> ${route.pros}<br>` +
+          `<span class="cons">Cons:</span> ${route.cons}`;
+
+        // Weiter-Button aktualisieren & anzeigen
+        const nextBtn = document.getElementById('next-button');
+        nextBtn.style.display = 'block';
+        nextBtn.onclick = () => window.location.href = route.link;
+      });
+    });
+  </script>
 </body>
 </html>
